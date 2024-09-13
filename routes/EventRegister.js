@@ -18,13 +18,13 @@ router.post("/register",async(req,res)=>{
     const {fullName,email,registerNclumber,phone,department,event}=req.body
     console.log(req.body)
     const eventcheck=await Event.findOne({email})
-    if (eventcheck){
+    if (eventcheck && eventcheck.event==event){
         return res.status(400).json({message:"event already registered"})
     }
     const eventRegister=await Event.create(req.body)
-    res.status(201).json({message:"event registered successfully"})
+    res.status(201).json({message:"event registered successfully",status:201})
 })
-router.get("/get",async(req,res)=>{
+router.get("/events",async(req,res)=>{
     const event=await Event.find()
     res.status(200).json({event})
 })
