@@ -16,8 +16,9 @@ router.use(express.json())
 
 router.post("/register",async(req,res)=>{
     const {fullName,email,registerNclumber,phone,department,event}=req.body
-    console.log(req.body)
-    const eventcheck=await Event.findOne({email})
+    // console.log(req.body)
+    const eventcheck=await Event.findOne({email,event})
+    console.log(eventcheck)
     if (eventcheck && eventcheck.event==event){
         return res.status(400).json({message:"event already registered"})
     }
