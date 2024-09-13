@@ -10,7 +10,7 @@ app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
 })
 
-app.listen(5676,()=>{
+app.listen(3000,()=>{
     connectDB()
-    console.log(`http://localhost:5676`)
+    console.log(`http://localhost:3000`)
 })
