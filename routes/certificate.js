@@ -23,7 +23,7 @@ router.post('/verify-certificate', async (req, res) => {
             name: certificate.Name,
             reg_no: certificate.reg_no,
             winning_date: certificate.Winning_Date,
-            winning_place: certificate.Winning_palce,
+            winning_place: certificate.Winning_place,
             img_url: certificate.Img_url,
             CertificateID:certificate.Certificate_id
         });

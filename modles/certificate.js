@@ -4,7 +4,7 @@ const schema= new mongoose.Schema({
     Name:String,
     reg_no:Number,
     Winning_Date:String,
-    Winning_palce:String,
+    Winning_place:String,
     Img_url:String
 })
 const model=mongoose.model("certificate",schema)
