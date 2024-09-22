@@ -4,6 +4,7 @@ const Razorpay =require("razorpay")
 const Event=require("../modles/event");
 const sendData = require("../sheet");
 const cors = require("cors")
+const nodemailer=require("nodemailer")
 router.use(cors())
 var instance = new Razorpay({
     key_id: 'rzp_test_EzUsahd1tsDo2l',
@@ -12,7 +13,13 @@ var instance = new Razorpay({
 
   router.use(express.json())
 
-
+const transporter=nodemailer.createTransport({
+    service:"oulook",
+    auth:{
+        user:"mohanavamsi16@outlook.com",
+        pass:"fmyeynjakqxqxtsm"
+    }
+})
 router.post('/createOrder', async (req, res) => {
     const options = {
         amount: 100, 
@@ -33,6 +40,7 @@ router.post("/verify",async (req,res)=>{
         if(data.status=="captured"){
             await Event.create({payment_id,fullName,email,registerNumber,phone,department,event})
             sendData(req.body)
+            await transporter.sendMail({from:"mohanavamsi16@outlook.com",to:email,text:"thank you for egestring"})
             return res.json({message:"done"})
         }
         console.log(res)
