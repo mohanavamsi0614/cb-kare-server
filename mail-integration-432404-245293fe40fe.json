@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mail-integration-432404",
+  "private_key_id": "245293fe40fe0242bd7f2282411faee2cd0c74b2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCetJ+1AVWwlhf7\nfXiIA/9zRN/tU6UDOfbsO5Up3QByr1ra0ZuYrPJL1nTd2N53YYV8XzkvwGlb32RV\nLASGZu86H73/1cJ6H43k/ZC72no6Plb3NoY5j4g0yWNxJE+fg7rRWN7kDyVsM4mk\ntlrurJtygIOYVbWS7VappoI8ZTfI9jHPniy/zKIfH0036L2uXlhUnAESBoQeAN5a\nIenBVHZuooEZxgWdXxvdF0rkKHcINOvm+Mq3Jh83eTHjaGFv6AW8kI+UW+G+Q7Za\ndkZ/ek6a3GqiOyOCRli33vsG0n9xetNZVCsTk9RkZcZWi6/zJ7XYE57JleFMhDdh\nobHm9QyVAgMBAAECggEABBP4FpqWLRduPlQXCMexhLC8YEjJ8K9InQFa79xx6oB/\nAShpqx6mizRThG/SJ5cl6vA3c/apvmabGWUsKJf0hbXTGAPSH3k4GC47zdfrVBvN\n+EQ6Zrg9c73JBFs+gIbOAhsafxm0iHc6jjTxWTiuNd7/gqaRJ9lZZLqWlh6ztEI0\n1/2sbqdqxcEVzUfstaDD19rzV7Bdi0QydQXUkh18AsrfJ13i2SCu7XZPijK+6KD+\nNEc/7MmLDNhbr7qlSHGrpiCvS8LTiA7Kmeq59tH6PdNJMCXQCMMeAwtzTj6vMr3e\nqc9htjoXI+/jCZKEpFkGKVHPyrO/Q0xGqLmGvB8qAQKBgQDbe00EdC72C7zXl+G7\n9DDSFmThiavD8bhZYOneZ+jOaZE9+TLodvjll6s3xaYMkr1b0Q3p3hejT0/a3yL2\n6uNs1qanJacGDxpyyC67vycFiOJ0VhX7i+qI7ZoTCGqI8Io5qMiBZ9ojSjKgp70W\nSfNgh91/1KkV2Pyr7mUSgDP8oQKBgQC5HJl0QU0wdU5135zmILfxK4xgMg1WbHmC\n9r4v15aBqz32xweHGurDoHIAzK4HcAJhrbcpNAt35TYHWHBvhcj93pDplLFRNmi1\nLIdodsHLOnw9h0fJ7V3SgHg8QjVF8eEvUzL00+Nw8jbzmUmz+wqaRxgn//DApq2O\nVqEJkGw3dQKBgQCviHdaPoloYo7PZjs1FOEOxLY94tsqxOGJKgcgxr3ch3WPuQPM\nA4qgJKLc4gghOiKTkiish+EjzUSyaY8PJ2BoJWv3dheUsvOWJR+rK//LX2StYkQG\ngCo9BLoayrpZdvc1khV52VMOskK3Vi/V6aLp6v9tQulP/dBmuSzAlSP+wQKBgCGH\ns6giN/giF380bPgmTwtJRxkZl97isTPuu85wr5t3SDcOICfx0Tp0MpJAgPlp6ZSF\n4dp9yeICy8GS3HLm+dw6V2dn/qJmR5shoLlkYYANbPm8Kl3COC9sA9tuZrXvtUlc\nOautQdJwnVGMn5QRUf9WB2Mfch2DU4an3G2eEmwNAoGBAMs+bDecer28LM9t6ZBf\nQt/ESDLnHluGBGPq3JtGO+9E+M2jKrzzVL5AIq3Lbo3VtGMJjI06DVpcbQAux2h5\nRllQNGsPaxfFImwP1+Twkj0Ji/e6n98klKU/5iJrqm8DE8PA9jOKcQnXre3HBLXY\nQogue9l4EcIVScN9npU+VVpZ\n-----END PRIVATE KEY-----\n",
+  "client_email": "mohanavamsi@mail-integration-432404.iam.gserviceaccount.com",
+  "client_id": "105207448112670961348",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mohanavamsi%40mail-integration-432404.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
