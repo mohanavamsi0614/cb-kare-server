@@ -3,13 +3,16 @@ const router=express.Router();
 const Razorpay =require("razorpay")
 const Event=require("../modles/event");
 const sendData = require("../sheet");
-
+const cors = require("cors")
+router.use(cors())
 var instance = new Razorpay({
     key_id: 'rzp_test_EzUsahd1tsDo2l',
     key_secret: 'pe9tcaS6mMkWQPrEDUK9lF0L',
   });
 
-  
+  router.use(express.json())
+
+
 router.post('/createOrder', async (req, res) => {
     const options = {
         amount: 100, 
