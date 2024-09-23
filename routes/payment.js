@@ -14,7 +14,7 @@ var instance = new Razorpay({
   router.use(express.json())
 
 const transporter=nodemailer.createTransport({
-    service:"oulook",
+    service:"outlook",
     auth:{
         user:"mohanavamsi16@outlook.com",
         pass:"fmyeynjakqxqxtsm"
@@ -33,19 +33,28 @@ router.post('/createOrder', async (req, res) => {
     }
 });
 
-router.post("/verify",async (req,res)=>{
-    const {payment_id,fullName,email,registerNumber,year,phone,department}=req.body
-    const event="Build-a-Bot 24hrs Hackathon"
-     instance.payments.fetch(payment_id).then(async (data)=>{
-        if(data.status=="captured"){
-            await Event.create({payment_id,fullName,email,registerNumber,phone,department,event})
-            sendData(req.body)
-            await transporter.sendMail({from:"mohanavamsi16@outlook.com",to:email,text:"thank you for egestring"})
-            return res.json({message:"done"})
+router.post("/verify", async (req, res) => {
+    const { payment_id, fullName, email, registerNumber, year, phone, department } = req.body;
+    const event = "Build-a-Bot 24hrs Hackathon";
+    try {
+        const data = await instance.payments.fetch(payment_id);
+        if (data.status === "captured") {
+            await Event.create({ payment_id, fullName, email, registerNumber, phone, department, event });
+            sendData(req.body);
+            await transporter.sendMail({
+                from: "mohanavamsi16@outlook.com",
+                to: email,
+                subject: "Registration Confirmation",
+                text: "Thank you for registering for Build-a-Bot 24hrs Hackathon",
+            });
+            return res.json({ message: "done" });
         }
-        console.log(res)
-    })
+        return res.status(400).json({ message: "Payment not captured" });
+    } catch (error) {
+        console.error("Error during verification:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
 
-})
 
 module.exports=router
