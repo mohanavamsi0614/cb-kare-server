@@ -40,7 +40,7 @@ router.post("/verify", async (req, res) => {
         const data = await instance.payments.fetch(payment_id);
         if (data.status === "captured") {
             await Event.create({ payment_id, fullName, email, registerNumber, phone, department, event });
-            sendData(req.body);
+            await sendData(req.body);
             await transporter.sendMail({
                 from: "mohanavamsi16@outlook.com",
                 to: email,
