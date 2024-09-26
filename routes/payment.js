@@ -16,10 +16,10 @@ var instance = new Razorpay({
 });
 
 const transporter = nodemailer.createTransport({
-  service: "outlook",
+  service: "gmail",
   auth: {
-    user: "mohanavamsi16@outlook.com",
-    pass: "fmyeynjakqxqxtsm",
+    user: "mohanavamsi14@gmail.com",
+    pass: "wken sosx ofjc cqvu",
   },
 });
 
@@ -43,9 +43,9 @@ router.post("/verify", async (req, res) => {
     const data = await instance.payments.fetch(payment_id);
     if (data.status === "captured") {
       await Event.create({ payment_id, fullName, email, registerNumber, phone, department, event });
-      await sendData(req.body); // <-- Make sure you're passing req.body
+      await sendData(req.body);
       await transporter.sendMail({
-        from: "mohanavamsi16@outlook.com",
+        from: "mohanavamsi14@gmail.com",
         to: email,
         subject: "Registration Confirmation",
         text: "Thank you for registering for Build-a-Bot 24hrs Hackathon",
@@ -58,38 +58,4 @@ router.post("/verify", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-async function sendData(reqBody) {
-  const { payment_id, fullName, email, year, registerNumber, phone, department } = reqBody;
-
-  const keys = require('./mail-integration-432404-245293fe40fe.json');
-
-  const client = new google.auth.JWT(
-    keys.client_email,
-    null,
-    keys.private_key,
-    ['https://www.googleapis.com/auth/spreadsheets']
-  );
-
-  try {
-    await client.authorize();
-    const sheets = google.sheets({ version: 'v4', auth: client });
-
-    const response = await sheets.spreadsheets.values.append({
-      spreadsheetId: '1rFVctggVV83YQnWMj-QHCj4c1dXibXTV5LCZFghhAUw',
-      range: 'Sheet1!A:F', 
-      valueInputOption: 'RAW',
-      resource: {
-        values: [[fullName, email, registerNumber, year, department, phone]],
-      },
-    });
-
-    console.log(response);
-    return 'Data successfully added to the sheet!';
-  } catch (error) {
-    console.error('Error adding data to sheet:', error.response ? error.response.data : error);
-    return 'Error adding data'; 
-  }
-}
-
 module.exports = router;
