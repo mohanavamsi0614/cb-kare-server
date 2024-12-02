@@ -18,7 +18,7 @@ app.get("/",(req,res)=>{
 })
 
 
-app.listen(3000,()=>{
-    connectDB()
+app.listen(3000,async ()=>{
+    await connectDB()
     console.log(`http://localhost:3000`)
 })
