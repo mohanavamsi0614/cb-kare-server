@@ -39,7 +39,7 @@ router.post("/verify",async (req,res)=>{
      instance.payments.fetch(payment_id).then(async (data)=>{
         if(data.status=="captured"){
             await Event.create({payment_id,fullName,email,registerNumber,phone,department,event})
-            sendData(req.body)
+            await sendData(req.body)
             await transporter.sendMail({from:"mohanavamsi16@outlook.com",to:email,text:"thank you for egestring"})
             return res.json({message:"done"})
         }
