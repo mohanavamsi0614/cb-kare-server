@@ -88,7 +88,7 @@ router.get("/team/:id", async (req, res) => {
     const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
         <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <img src=${"../1cbd3594bb5e8d90924a105d4aae924c.gif"} style="width:200px"/>
+        <img src="../1cbd3594bb5e8d90924a105d4aae924c.gif" style="width:200px"/>
           <h2 style="margin: 0; font-size: 24px;">Team Verified Successfully</h2>
         </div>
         <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
