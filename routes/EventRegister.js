@@ -85,27 +85,35 @@ router.get("/team/:id", async (req, res) => {
     team.verified = true;
 
     const emailContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
-        <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <img src='../1cbd3594bb5e8d90924a105d4aae924c.gif' style="width:200px"/>
-          <h2 style="margin: 0; font-size: 24px;">Team Verified Successfully</h2>
-        </div>
-        <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-            Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
-          </p>
-          <p style="font-size: 16px; line-height: 1.5;">You can now proceed with the next steps.</p>
-          <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
-          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
-        </div>
-        <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
-        </div>
-      </div>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+  <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center;">
+    <img src="../1cbd3594bb5e8d90924a105d4aae924c.gif" style="width: 150px; margin-bottom: 10px;" alt="Team Verified">
+    <h2 style="margin: 0; font-size: 24px; font-weight: bold;">Team Verified Successfully</h2>
+  </div>
+  <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">
+      Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
+    </p>
+    <p style="font-size: 16px; margin: 0 0 20px;">
+      You can now proceed with the next steps by joining the WhatsApp group.
+    </p>
+    <a href="https://chat.whatsapp.com/CBl5Jt2EorYBIrAphJFToX" style="text-decoration: none;">
+      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s ease;">
+       <img src=''/> WhatsApp Group Link
+      </button>
+    </a>
+    <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
+    <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
+  </div>
+  <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
+    <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+  </div>
+</div>
+
     `;
 
-    await sendEmail(team.lead.email, `Your Team ${teamName} is Verified`, emailContent);
+    await sendEmail(team.lead.email, `Your Team ${team.teamName} is Verified`, emailContent);
 
     await team.save();
     res.status(200).json({ message: "Team verified successfully" });
