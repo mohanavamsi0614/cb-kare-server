@@ -53,7 +53,7 @@ router.post("/register", async (req, res) => {
             If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
           </p>
           <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
-          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">The Team</p>
+          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
         </div>
         <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
           <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
@@ -61,7 +61,7 @@ router.post("/register", async (req, res) => {
       </div>
     `;
 
-    sendEmail(lead.email, "Your team is under verification", emailContent);
+    sendEmail(lead.email, `Your team ${teamName} is under verification`, emailContent);
     res.status(201).json({ message: "Team registered and email sent successfully", event });
   } catch (err) {
     console.error("Error in /register:", err);
@@ -87,7 +87,7 @@ router.get("/team/:id", async (req, res) => {
     const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
         <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <img src="../1cbd3594bb5e8d90924a105d4aae924c.gif" style="width:200px"/>
+        <img src='../1cbd3594bb5e8d90924a105d4aae924c.gif' style="width:200px"/>
           <h2 style="margin: 0; font-size: 24px;">Team Verified Successfully</h2>
         </div>
         <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
@@ -97,7 +97,7 @@ router.get("/team/:id", async (req, res) => {
           </p>
           <p style="font-size: 16px; line-height: 1.5;">You can now proceed with the next steps.</p>
           <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
-          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">The Team</p>
+          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
         </div>
         <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
           <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
@@ -105,7 +105,7 @@ router.get("/team/:id", async (req, res) => {
       </div>
     `;
 
-    await sendEmail(team.lead.email, "Team Verified", emailContent);
+    await sendEmail(team.lead.email, `Your Team ${teamName} is Verified`, emailContent);
 
     await team.save();
     res.status(200).json({ message: "Team verified successfully" });
