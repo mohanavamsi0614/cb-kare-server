@@ -73,7 +73,9 @@ router.get("/team/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const team = await Event.findById(id);
-
+    console.log(team)
+    let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
+    console.log(allm)
     if (!team) {
       return res.status(404).json({ error: "Team not found." });
     }
@@ -85,10 +87,17 @@ router.get("/team/:id", async (req, res) => {
     team.verified = true;
 
     const emailContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
-  <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center;">
-    <img src="../1cbd3594bb5e8d90924a105d4aae924c.gif" style="width: 150px; margin-bottom: 10px;" alt="Team Verified">
-    <h2 style="margin: 0; font-size: 24px; font-weight: bold;">Team Verified Successfully</h2>
+   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+  <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
+    <div>
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733149927/m4dnhahrajr6sdmoq4nk.png" alt="Left Logo" style="width: 80px; height: auto;">
+    </div>
+    <div >
+      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
+    </div>
+    <div >
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
+    </div>
   </div>
   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
     <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
@@ -99,8 +108,8 @@ router.get("/team/:id", async (req, res) => {
       You can now proceed with the next steps by joining the WhatsApp group.
     </p>
     <a href="https://chat.whatsapp.com/CBl5Jt2EorYBIrAphJFToX" style="text-decoration: none;">
-      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s ease;">
-       <img src=''/> WhatsApp Group Link
+      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
+        Join WhatsApp Group
       </button>
     </a>
     <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
@@ -110,7 +119,6 @@ router.get("/team/:id", async (req, res) => {
     <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
   </div>
 </div>
-
     `;
 
     await sendEmail(team.lead.email, `Your Team ${team.teamName} is Verified`, emailContent);
