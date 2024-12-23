@@ -32,11 +32,12 @@ const sendEmail = async (to, subject, html) => {
 router.post("/register", async (req, res) => {
   try {
     const { lead, members, upi, txn, url, teamName } = req.body;
-
+    const count=(await Event.find({})).length
+    console.log(count)
+    if (count<70){
     if (!lead || !lead.email || !teamName) {
       return res.status(400).json({ error: "Missing required fields." });
     }
-
     const event = await Event.create(req.body);
 
     const emailContent = `
@@ -63,6 +64,10 @@ router.post("/register", async (req, res) => {
 
     sendEmail(lead.email, `Your team ${teamName} is under verification`, emailContent);
     res.status(201).json({ message: "Team registered and email sent successfully", event });
+  }
+  else{
+    res.status(401).json({message:"Restration team got filled!"})
+  }
   } catch (err) {
     console.error("Error in /register:", err);
     res.status(500).json({ error: "Internal server error" });
