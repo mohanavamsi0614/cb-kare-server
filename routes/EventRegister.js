@@ -34,7 +34,7 @@ router.post("/register", async (req, res) => {
     const { lead, members, upi, txn, url, teamName } = req.body;
     const count=(await Event.find({})).length
     console.log(count)
-    if (count<70){
+    if (count<67){
     if (!lead || !lead.email || !teamName) {
       return res.status(400).json({ error: "Missing required fields." });
     }
