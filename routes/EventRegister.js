@@ -4,6 +4,7 @@ const Event=require("../modles/event")
 const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
+const { route } = require("./UserRoutes")
 router.use(cors())
 router.use(express.json())
 
@@ -74,13 +75,46 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/team/:id", async (req, res) => {
+router.delete("/team/:id",async(req,res)=>{
   try {
     const { id } = req.params;
-    const team = await Event.findById(id);
+    const {email}=req.body
+    console.log(email)
+    const team = await Event.findByIdAndDelete(id);
     console.log(team)
+    const emailContent = `
+   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+  <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
+      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Refund Successfull</h2>
+  </div>
+  <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">
+       Your team, <strong>${team.teamName}</strong>, has been successfully withdrawed.
+    </p>
+    <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
+    <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
+  </div>
+  <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
+    <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+  </div>
+</div>
+    `;
+    sendEmail(team.lead.email,"Refund Succesfull",emailContent)
+     res.status(200).json({ message: "Team refunded successfully" });
+  } catch (err) {
+    console.error("Error in /team/:id:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
+
+router.get("/team/:id", async (req, res) => {
+  try {
+    console.log("local")
+    const { id } = req.params;
+    const team = await Event.findById(id);
     let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
-    console.log(allm)
+    allm.push(team.lead.email)
     if (!team) {
       return res.status(404).json({ error: "Team not found." });
     }
@@ -95,7 +129,7 @@ router.get("/team/:id", async (req, res) => {
    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
   <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
     <div>
-      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733149927/m4dnhahrajr6sdmoq4nk.png" alt="Left Logo" style="width: 80px; height: auto;">
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
     </div>
     <div >
       <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
@@ -126,9 +160,8 @@ router.get("/team/:id", async (req, res) => {
 </div>
     `;
 
-    await sendEmail(team.lead.email, `Your Team ${team.teamName} is Verified`, emailContent);
-
-    await team.save();
+    await team.save()
+    await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
     res.status(200).json({ message: "Team verified successfully" });
   } catch (err) {
     console.error("Error in /team/:id:", err);
