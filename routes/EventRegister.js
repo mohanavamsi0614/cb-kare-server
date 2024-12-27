@@ -30,6 +30,16 @@ const sendEmail = async (to, subject, html) => {
   }
 };
 
+router.post("/team/:password",async(req,res)=>{
+  const {password}=req.params
+  const team=await Event.findOne({password:password})
+  if(team){
+    return res.json(team);
+  }
+  res.status(404).json("not found")
+  
+})
+
 router.post("/register", async (req, res) => {
   try {
     const { lead, members, upi, txn, url, teamName } = req.body;
@@ -109,64 +119,66 @@ router.delete("/team/:id",async(req,res)=>{
 })
 
 router.get("/team/:id", async (req, res) => {
-  try {
     console.log("local")
     const { id } = req.params;
+    const {score}=req.body;
     const team = await Event.findById(id);
-    let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
-    allm.push(team.lead.email)
-    if (!team) {
-      return res.status(404).json({ error: "Team not found." });
-    }
+    // let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
+    // allm.push(team.lead.email)
+    // if (!team) {
+    //   return res.status(404).json({ error: "Team not found." });
+    // }
 
-    if (!team.lead || !team.lead.email) {
-      return res.status(400).json({ error: "Lead email is missing." });
-    }
+    // if (!team.lead || !team.lead.email) {
+    //   return res.status(400).json({ error: "Lead email is missing." });
+    // }
 
-    team.verified = true;
+    team.Score = score;
+    await team.save();
 
-    const emailContent = `
-   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
-  <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
-    <div>
-      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
-    </div>
-    <div >
-      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
-    </div>
-    <div >
-      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
-    </div>
-  </div>
-  <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
-    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
-    <p style="font-size: 16px; margin: 0 0 15px;">
-      Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
-    </p>
-    <p style="font-size: 16px; margin: 0 0 20px;">
-      You can now proceed with the next steps by joining the WhatsApp group.
-    </p>
-    <a href="https://chat.whatsapp.com/CBl5Jt2EorYBIrAphJFToX" style="text-decoration: none;">
-      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
-        Join WhatsApp Group
-      </button>
-    </a>
-    <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
-    <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
-  </div>
-  <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
-    <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
-  </div>
-</div>
-    `;
+//     const emailContent = `
+//    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+//   <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
+//     <div>
+//       <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
+//     </div>
+//     <div >
+//       <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
+//     </div>
+//     <div >
+//       <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
+//     </div>
+//   </div>
+//   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
+//     <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
+//     <p style="font-size: 16px; margin: 0 0 15px;">
+//       Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
+//     </p>
+//     <p style="font-size: 16px; margin: 0 0 20px;">
+//       You can now proceed with the next steps by joining the WhatsApp group.
+//     </p>
+//     <a href="https://chat.whatsapp.com/CBl5Jt2EorYBIrAphJFToX" style="text-decoration: none;">
+//       <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
+//         Join WhatsApp Group
+//       </button>
+//     </a>
+//     <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
+//     <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
+//   </div>
+//   <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
+//     <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+//   </div>
+// </div>
+//     `;
 
-    await team.save()
-    await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
-    res.status(200).json({ message: "Team verified successfully" });
-  } catch (err) {
-    console.error("Error in /team/:id:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
+//     await team.save()
+//     await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
+//     res.status(200).json({ message: "Team verified successfully" });
+//   } catch (err) {
+//     console.error("Error in /team/:id:", err);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+res.json("done")
 });
 
 router.get("/students", async (req, res) => {
@@ -178,5 +190,21 @@ router.get("/students", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+router.get("/team/score/:id", async (req, res) => {
+  console.log("local")
+  const { id } = req.params;
+  const {team}=req.body;
+  console.log(team)
+  let Team = await Event.findByIdAndUpdate(id,team);
+res.json("done")
+});
+router.post("/pro/:id",async (req,res)=>{
+  const { id } = req.params;
+  const {projectId}=req.body;
+  const team = await Event.findById(id);
+  team.ProblemID = projectId;
+  await team.save();
+  res.json("done")
+})
 
 module.exports = router;

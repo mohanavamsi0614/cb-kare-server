@@ -6,7 +6,13 @@ const eventSchema=new mongoose.Schema({
     upiId:String,
     transtationId:String,
     imgUrl:String,
-    verified:{type:Boolean,default:false}
+    verified:{type:Boolean,default:false},
+    ProblemID:Number,
+    Score:Number,
+    password:String,
+    FirstReview:Object,
+    SecoundReview:Object,
+    ThirdReview:Object
 })
 const Event=mongoose.model("Event",eventSchema)
 module.exports=Event
