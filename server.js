@@ -37,7 +37,6 @@ io.on("connection",(socket)=>{
         const {lead,members}=team
         Team.lead=lead
         Team.members=members
-
         io.to(name).emit("team",Team)
         await Team.save();
     })
@@ -46,8 +45,7 @@ io.on("connection",(socket)=>{
         const {teamName}=team
         console.log(team)
         const Team=await Event.findOne({teamName:teamName})
-        Team.Score=team.Score
-        Team.FirstReview=team.FirstReview
+        Team.HuntScore +=team.HuntScore
         await Team.save()
         console.log(Team)
         const teams=await Event.find();
