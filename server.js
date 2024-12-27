@@ -49,7 +49,7 @@ io.on("connection",(socket)=>{
         await Team.save()
         console.log(Team)
         const teams=await Event.find();
-        io.emit("leaderboard",teams.sort((a,b)=>{b.Score-a.Score}));
+        io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
     })
 })
 
