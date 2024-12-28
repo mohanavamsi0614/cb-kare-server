@@ -190,9 +190,10 @@ router.get("/students", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-router.get("/team/score/:id", async (req, res) => {
+router.post("/team/score/:id", async (req, res) => {
   console.log("local")
   const { id } = req.params;
+  console.log(req.body)
   const {team}=req.body;
   console.log(team)
   let Team = await Event.findByIdAndUpdate(id,team);
