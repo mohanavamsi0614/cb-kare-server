@@ -208,5 +208,14 @@ router.post("/pro/:id",async (req,res)=>{
   res.json("done")
 })
 
+router.post("/feedback/:id",async(req,res)=>{
+  const { id } = req.params;
+  const {feedback}=req.body;
+  const team = await Event.findById(id);
+  team.FeedBack = feedback;
+  await team.save();
+  res.json("done")
+})
+
 
 module.exports = router;

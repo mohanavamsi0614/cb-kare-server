@@ -15,7 +15,8 @@ const eventSchema=new mongoose.Schema({
     ThirdReview:Object,
     SecoundReviewScore:{type:Number,default:0},
     ThirdReviewScore:{type:Number,default:0},
-    HuntScore:{type:Number,default:0}
+    HuntScore:{type:Number,default:0},
+    FeedBack:String
 })
 const Event=mongoose.model("Event",eventSchema)
 module.exports=Event;
