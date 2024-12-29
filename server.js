@@ -26,7 +26,7 @@ const rateLimit=require("express-rate-limit")
 
 
 // app.use(limiter);
-app.use(cors())
+app.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 app.use(express.json())
 app.use("/user",UserRoutes)
 app.use("/event",EventRegister)
