@@ -9,9 +9,23 @@ const pay=require("./routes/payment")
 const Teams=require("./modles/event")
 const app=express()
 const server=require("http").createServer(app)
-const io=socketio(server,{cors:{origin:"*"}})
+const io=socketio(server,{cors:{origin:"https://build-a-bot-coral.vercel.app"}})
 const cors=require("cors")
 const Event = require("./modles/event")
+const rateLimit=require("express-rate-limit")
+// const limiter = rateLimit({
+//     windowMs: 60 * 1000, 
+//     max: 10, 
+//     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+//     message: {
+//         status: 429,
+//         error: "Too many requests, please try again after a minute.",
+//     },
+// });
+
+
+// app.use(limiter);
 app.use(cors())
 app.use(express.json())
 app.use("/user",UserRoutes)

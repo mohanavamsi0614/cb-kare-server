@@ -5,7 +5,7 @@ const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
 const { route } = require("./UserRoutes")
-router.use(cors())
+router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 router.use(express.json())
 
 const transporter = nodemailer.createTransport({
@@ -31,12 +31,17 @@ const sendEmail = async (to, subject, html) => {
 };
 
 router.post("/team/:password",async(req,res)=>{
+  try{
   const {password}=req.params
   const team=await Event.findOne({password:password})
   if(team){
     return res.json(team);
   }
   res.status(404).json("not found")
+}
+catch{
+  res.status(420).json("Don't act smart")
+}
   
 })
 
@@ -191,6 +196,7 @@ router.get("/students", async (req, res) => {
   }
 });
 router.post("/team/score/:id", async (req, res) => {
+  try{
   console.log("local")
   const { id } = req.params;
   console.log(req.body)
@@ -198,6 +204,11 @@ router.post("/team/score/:id", async (req, res) => {
   console.log(team)
   let Team = await Event.findByIdAndUpdate(id,team);
 res.json("done")
+  }
+  catch{
+    res.status(420).json("Don't act smart")
+
+  }
 });
 router.post("/pro/:id",async (req,res)=>{
   const { id } = req.params;
