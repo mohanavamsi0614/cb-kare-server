@@ -5,6 +5,7 @@ const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
 const { route } = require("./UserRoutes")
+const codebrack = require("../modles/codebrack")
 router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 router.use(express.json())
 
@@ -228,5 +229,21 @@ router.post("/feedback/:id",async(req,res)=>{
   res.json("done")
 })
 
-
+router.post("/codebrake/register", async (req,res)=>{
+  const {body}=req
+  const student=await codebrack.create(body)
+  sendEmail(student.email,"Registration Succesfull! payment under verfication","payment under verification")
+  res.json("done")
+})
+router.get("/codebrake/student/:id",async (req,res)=>{
+  const {id}=req.params
+  const student= await codebrack.findById(id)
+  student.verifyed=true
+  await student.save()
+  res.json("done")
+})
+router.get("/codebrake/students",async (req,res)=>{
+  const students=await codebrack.find({})
+  res.json(students)
+})
 module.exports = router;

@@ -9,10 +9,9 @@ const pay=require("./routes/payment")
 const Teams=require("./modles/event")
 const app=express()
 const server=require("http").createServer(app)
-const io=socketio(server,{cors:{origin:"https://build-a-bot-coral.vercel.app"}})
+const io=socketio(server,{cors:{origin:"*"}})
 const cors=require("cors")
 const Event = require("./modles/event")
-const rateLimit=require("express-rate-limit")
 // const limiter = rateLimit({
 //     windowMs: 60 * 1000, 
 //     max: 10, 
@@ -23,10 +22,10 @@ const rateLimit=require("express-rate-limit")
 //         error: "Too many requests, please try again after a minute.",
 //     },
 // });
-
+// 
 
 // app.use(limiter);
-app.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
+app.use(cors())
 app.use(express.json())
 app.use("/user",UserRoutes)
 app.use("/event",EventRegister)
