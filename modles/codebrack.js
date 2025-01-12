@@ -9,6 +9,10 @@ const RegistrationFormSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    regnum:{
+        type: Number,
+        required: true
+    },
     year: {
         type: Number,
         required: true
