@@ -6,7 +6,7 @@ const dot=require("dotenv").config()
 const cors = require("cors")
 const { route } = require("./UserRoutes")
 const codebrack = require("../modles/codebrack")
-router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
+// router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 router.use(express.json())
 
 const transporter = nodemailer.createTransport({
