@@ -17,26 +17,68 @@ const transporter = nodemailer.createTransport({
   },
 });
 const paymentVerificationTemplate = (studentName) => `
-  <html>
-    <body>
-      <h1>Hello ${studentName},</h1>
-      <p>Thank you for registering. Your payment is currently under verification. We will notify you once the verification process is completed.</p>
-      <p>Thank you for your patience.</p>
-      <p>Best regards,</p>
-      <p>Your Team</p>
-    </body>
-  </html>
+ <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
+        <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+          <h2 style="margin: 0; font-size: 24px;">Team Verification Under Pending</h2>
+        </div>
+        <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
+          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${studentName}</strong>,</p>
+          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+            Thank you for registering your team, <strong>${studentName}</strong>. Your submission is currently under verification. We’ll notify you as soon as the verification process is complete.
+          </p>
+          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+            If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
+          </p>
+          <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
+          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
+        </div>
+         <p style="font-size: 16px; margin: 0 0 20px;">
+      You can now proceed with the next steps by joining the WhatsApp group.
+    </p>
+    <a href="https://chat.whatsapp.com/C3RvIoTKIJR39tlSRnfRtg" style="text-decoration: none;">
+      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
+        Join WhatsApp Group
+      </button>
+    </a>
+        <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
+          <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+        </div>
+      </div>
 `;
 const registrationSuccessfulTemplate = (studentName) => `
-  <html>
-    <body>
-      <h1>Hello ${studentName},</h1>
-      <p>Congratulations! Your registration was successful, and you are now a verified student. Welcome aboard!</p>
-      <p>We look forward to supporting you in your learning journey.</p>
-      <p>Best regards,</p>
-      <p>Your Team</p>
-    </body>
-  </html>
+  
+   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+  <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
+    <div>
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
+    </div>
+    <div >
+      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
+    </div>
+    <div >
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
+    </div>
+  </div>
+  <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${studentName}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">
+      Congratulations! The Registration for, <strong>${studentName}</strong>, has been successfully verified.
+    </p>
+    <p style="font-size: 16px; margin: 0 0 20px;">
+      You can now proceed with the next steps by joining the WhatsApp group.
+    </p>
+    <a href="https://chat.whatsapp.com/C3RvIoTKIJR39tlSRnfRtg" style="text-decoration: none;">
+      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
+        Join WhatsApp Group
+      </button>
+    </a>
+    <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
+    <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
+  </div>
+  <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
+    <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+  </div>
+</div>
 `;
 
 const sendEmail = async (to, subject, html) => {
