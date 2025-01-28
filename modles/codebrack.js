@@ -44,6 +44,12 @@ const RegistrationFormSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    hostel:{
+        type:String,
+    },
+    room:{
+        type:String
+    },
 });
 
 module.exports = mongoose.model("RegistrationForm", RegistrationFormSchema);
