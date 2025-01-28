@@ -31,8 +31,7 @@ const paymentVerificationTemplate = (studentName) => `
           </p>
           <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
           <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
-        </div>
-         <p style="font-size: 16px; margin: 0 0 20px;">
+          <p style="font-size: 16px; margin: 0 0 20px;">
       You can now proceed with the next steps by joining the WhatsApp group.
     </p>
     <a href="https://chat.whatsapp.com/C3RvIoTKIJR39tlSRnfRtg" style="text-decoration: none;">
@@ -40,8 +39,10 @@ const paymentVerificationTemplate = (studentName) => `
         Join WhatsApp Group
       </button>
     </a>
+        </div>
+         
         <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+          <p style="margin: 0;">&copy; 2025 Team. All rights reserved.</p>
         </div>
       </div>
 `;
@@ -76,7 +77,7 @@ const registrationSuccessfulTemplate = (studentName) => `
     <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
   </div>
   <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
-    <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+    <p style="margin: 0;">&copy; 2025 Team. All rights reserved.</p>
   </div>
 </div>
 `;
