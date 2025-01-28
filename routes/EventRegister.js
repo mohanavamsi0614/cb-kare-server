@@ -289,7 +289,7 @@ router.post("/codebrake/register", async (req, res) => {
   const { body } = req;
   const count=(await Event.find({})).length
     console.log(count)
-    if (count<70){
+    if (count<300){
   const student = await codebrack.create(body);
   const emailContent = paymentVerificationTemplate(student.name);
   sendEmail(student.email, "Your Payment under Verification", emailContent);
