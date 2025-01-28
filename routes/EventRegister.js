@@ -31,14 +31,6 @@ const paymentVerificationTemplate = (studentName) => `
           </p>
           <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
           <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
-          <p style="font-size: 16px; margin: 0 0 20px;">
-      You can now proceed with the next steps by joining the WhatsApp group.
-    </p>
-    <a href="https://chat.whatsapp.com/C3RvIoTKIJR39tlSRnfRtg" style="text-decoration: none;">
-      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
-        Join WhatsApp Group
-      </button>
-    </a>
         </div>
          
         <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
