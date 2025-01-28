@@ -24,7 +24,7 @@ const paymentVerificationTemplate = (studentName) => `
         <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${studentName}</strong>,</p>
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-            Thank you for registering your team, <strong>${studentName}</strong>. Your submission is currently under verification. We’ll notify you as soon as the verification process is complete.
+            Thank you for registering to code breaker <strong>${studentName}</strong>. Your submission is currently under verification. We’ll notify you as soon as the verification process is complete.
           </p>
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
             If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
