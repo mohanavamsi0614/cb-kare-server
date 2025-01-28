@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 const paymentVerificationTemplate = (studentName) => `
  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
         <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-          <h2 style="margin: 0; font-size: 24px;">Team Verification Under Pending</h2>
+          <h2 style="margin: 0; font-size: 24px;">Payment Verification Under Pending</h2>
         </div>
         <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${studentName}</strong>,</p>
@@ -54,7 +54,7 @@ const registrationSuccessfulTemplate = (studentName) => `
       <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
     </div>
     <div >
-      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
+      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Payment Verified Successfully</h2>
     </div>
     <div >
       <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
@@ -63,7 +63,7 @@ const registrationSuccessfulTemplate = (studentName) => `
   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
     <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${studentName}</strong>,</p>
     <p style="font-size: 16px; margin: 0 0 15px;">
-      Congratulations! The Registration for, <strong>${studentName}</strong>, has been successfully verified.
+      Congratulations! The Registration for, <strong>You</strong>, has been successfully verified.
     </p>
     <p style="font-size: 16px; margin: 0 0 20px;">
       You can now proceed with the next steps by joining the WhatsApp group.
@@ -125,7 +125,7 @@ router.post("/register", async (req, res) => {
     const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
         <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-          <h2 style="margin: 0; font-size: 24px;">Team Verification Under Pending</h2>
+          <h2 style="margin: 0; font-size: 24px;">Payment Verification Under Pending</h2>
         </div>
         <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${lead.name}</strong>,</p>
