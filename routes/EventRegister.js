@@ -16,6 +16,28 @@ const transporter = nodemailer.createTransport({
     pass: process.env.PASS,
   },
 });
+const paymentVerificationTemplate = (studentName) => `
+  <html>
+    <body>
+      <h1>Hello ${studentName},</h1>
+      <p>Thank you for registering. Your payment is currently under verification. We will notify you once the verification process is completed.</p>
+      <p>Thank you for your patience.</p>
+      <p>Best regards,</p>
+      <p>Your Team</p>
+    </body>
+  </html>
+`;
+const registrationSuccessfulTemplate = (studentName) => `
+  <html>
+    <body>
+      <h1>Hello ${studentName},</h1>
+      <p>Congratulations! Your registration was successful, and you are now a verified student. Welcome aboard!</p>
+      <p>We look forward to supporting you in your learning journey.</p>
+      <p>Best regards,</p>
+      <p>Your Team</p>
+    </body>
+  </html>
+`;
 
 const sendEmail = async (to, subject, html) => {
   try {
@@ -229,19 +251,28 @@ router.post("/feedback/:id",async(req,res)=>{
   res.json("done")
 })
 
-router.post("/codebrake/register", async (req,res)=>{
-  const {body}=req
-  const student=await codebrack.create(body)
-  sendEmail(student.email,"Registration Succesfull! payment under verfication","payment under verification")
-  res.json("done")
-})
-router.get("/codebrake/student/:id",async (req,res)=>{
-  const {id}=req.params
-  const student= await codebrack.findById(id)
-  student.verifyed=true
-  await student.save()
-  res.json("done")
-})
+router.post("/codebrake/register", async (req, res) => {
+  const { body } = req;
+  const student = await codebrack.create(body);
+  
+  const emailContent = paymentVerificationTemplate(student.name);
+  sendEmail(student.email, "Your Payment under Verification", emailContent);
+  
+  res.json("done");
+});
+
+router.get("/codebrake/student/:id", async (req, res) => {
+  const { id } = req.params;
+  const student = await codebrack.findById(id);
+  student.verifyed = true;
+  await student.save();
+
+  const emailContent = registrationSuccessfulTemplate(student.name);
+  sendEmail(student.email, "Registration Successful", emailContent);
+  
+  res.json("done");
+});
+
 router.get("/codebrake/students",async (req,res)=>{
   const students=await codebrack.find({})
   res.json(students)
