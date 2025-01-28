@@ -47,7 +47,7 @@ const RegistrationFormSchema = new mongoose.Schema({
     hostel:{
         type:String,
     },
-    room:{
+    roomNumber:{
         type:String
     },
 });
