@@ -12,6 +12,7 @@ const server=require("http").createServer(app)
 const io=socketio(server,{cors:{origin:"*"}})
 const cors=require("cors")
 const Event = require("./modles/event")
+const codebrack = require("./modles/codebrack")
 // const limiter = rateLimit({
 //     windowMs: 60 * 1000, 
 //     max: 10, 
@@ -63,6 +64,21 @@ io.on("connection",(socket)=>{
         console.log(Team)
         const teams=await Event.find();
         io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
+    })
+    socket.on("reg",async()=>{
+        const count=(await codebrack.find({})).length
+        if (count>=350){
+            io.emit("check","stop")
+        }
+    })
+    socket.on("check",async()=>{
+        const count=(await codebrack.find({})).length
+        if (count>=350){
+            io.emit("see","stop")
+        }
+        else{
+            io.emit("see","omk")
+        }
     })
 })
 

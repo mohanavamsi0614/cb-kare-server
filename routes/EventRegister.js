@@ -294,7 +294,6 @@ router.post("/codebrake/register", async (req, res) => {
   const student = await codebrack.create(body);
   const emailContent = paymentVerificationTemplate(student.name);
   sendEmail(student.email, "Your Payment under Verification", emailContent);
-  
   res.json("done");
     }
     else{
