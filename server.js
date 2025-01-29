@@ -67,13 +67,16 @@ io.on("connection",(socket)=>{
     })
     socket.on("reg",async()=>{
         const count=(await codebrack.find({})).length
-        if (count>=350){
+        if (count>=345){
             io.emit("check","stop")
+        }
+        else{
+            io.emit("check","ok")
         }
     })
     socket.on("check",async()=>{
         const count=(await codebrack.find({})).length
-        if (count>=350){
+        if (count>=345){
             io.emit("see","stop")
         }
         else{

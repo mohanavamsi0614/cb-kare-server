@@ -289,7 +289,7 @@ router.post("/codebrake/register", async (req, res) => {
   const { body } = req;
   const count=(await codebrack.find({})).length
     console.log(count)
-    if (count<350){
+    if (count<345){
       console.log("gihwe")
   const student = await codebrack.create(body);
   const emailContent = paymentVerificationTemplate(student.name);
