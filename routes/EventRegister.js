@@ -287,9 +287,10 @@ router.post("/feedback/:id",async(req,res)=>{
 
 router.post("/codebrake/register", async (req, res) => {
   const { body } = req;
-  const count=(await Event.find({})).length
+  const count=(await codebrack.find({})).length
     console.log(count)
-    if (count<300){
+    if (count<350){
+      console.log("gihwe")
   const student = await codebrack.create(body);
   const emailContent = paymentVerificationTemplate(student.name);
   sendEmail(student.email, "Your Payment under Verification", emailContent);
@@ -297,7 +298,7 @@ router.post("/codebrake/register", async (req, res) => {
   res.json("done");
     }
     else{
-      res.status(401).json("no")
+      res.status(401).json("all done")
     }
 });
 
