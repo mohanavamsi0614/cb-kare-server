@@ -1,8 +1,11 @@
 const mongoose=require("mongoose")
 const eventSchema=new mongoose.Schema({
-    teamName:String,
-    lead:Object,
-    members:Array,
+    teamname:String,
+    email:String,
+name: String,
+registrationNumber:String,
+room:String,
+    teamMembers:Array,
     upiId:String,
     transtationId:String,
     imgUrl:String,
