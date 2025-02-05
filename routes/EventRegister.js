@@ -1,6 +1,6 @@
 const express=require("express")
 const router=express.Router()
-const Event=require("../modles/event")
+const Innov=require("../modles/innov")
 const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
@@ -90,7 +90,7 @@ const sendEmail = async (to, subject, html) => {
 router.post("/team/:password",async(req,res)=>{
   try{
   const {password}=req.params
-  const team=await Event.findOne({password:password})
+  const team=await Innov.findOne({password:password})
   if(team){
     return res.json(team);
   }
@@ -105,13 +105,13 @@ catch{
 router.post("/register", async (req, res) => {
   try {
     const { lead, members, upi, txn, url, teamName } = req.body;
-    const count=(await Event.find({})).length
+    const count=(await Innov.find({})).length
     console.log(count)
     if (count<70){
     if (!lead || !lead.email || !teamName) {
       return res.status(400).json({ error: "Missing required fields." });
     }
-    const event = await Event.create(req.body);
+    const Innov = await Innov.create(req.body);
 
     const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
@@ -136,7 +136,7 @@ router.post("/register", async (req, res) => {
     `;
 
     sendEmail(lead.email, `Your team ${teamName} is under verification`, emailContent);
-    res.status(201).json({ message: "Team registered and email sent successfully", event });
+    res.status(201).json({ message: "Team registered and email sent successfully", Innov });
   }
   else{
     res.status(401).json({message:"Restration team got filled!"})
@@ -152,7 +152,7 @@ router.delete("/team/:id",async(req,res)=>{
     const { id } = req.params;
     const {email}=req.body
     console.log(email)
-    const team = await Event.findByIdAndDelete(id);
+    const team = await Innov.findByIdAndDelete(id);
     console.log(team)
     const emailContent = `
    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
@@ -184,68 +184,64 @@ router.get("/team/:id", async (req, res) => {
     console.log("local")
     const { id } = req.params;
     const {score}=req.body;
-    const team = await Event.findById(id);
-    // let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
-    // allm.push(team.lead.email)
-    // if (!team) {
-    //   return res.status(404).json({ error: "Team not found." });
-    // }
+    const team = await Innov.findById(id);
+    let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
+    allm.push(team.lead.email)
+    if (!team) {
+      return res.status(404).json({ error: "Team not found." });
+    }
 
-    // if (!team.lead || !team.lead.email) {
-    //   return res.status(400).json({ error: "Lead email is missing." });
-    // }
+    if (!team.lead || !team.lead.email) {
+      return res.status(400).json({ error: "Lead email is missing." });
+    }
 
     team.Score = score;
     await team.save();
 
-//     const emailContent = `
-//    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
-//   <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
-//     <div>
-//       <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
-//     </div>
-//     <div >
-//       <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
-//     </div>
-//     <div >
-//       <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
-//     </div>
-//   </div>
-//   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
-//     <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
-//     <p style="font-size: 16px; margin: 0 0 15px;">
-//       Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
-//     </p>
-//     <p style="font-size: 16px; margin: 0 0 20px;">
-//       You can now proceed with the next steps by joining the WhatsApp group.
-//     </p>
-//     <a href="https://chat.whatsapp.com/CBl5Jt2EorYBIrAphJFToX" style="text-decoration: none;">
-//       <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
-//         Join WhatsApp Group
-//       </button>
-//     </a>
-//     <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
-//     <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
-//   </div>
-//   <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
-//     <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
-//   </div>
-// </div>
-//     `;
+    const emailContent = `
+   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+  <div style="background:#e16254;color:#ece8e7;padding:20px;text-align:center;display:flex;justify-content: space-between;align-items: center;">
+    <div>
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1734961735/KARE_latest_ifnype.png" alt="Left Logo" style="width: 80px; border-radius:40px; height: auto;">
+    </div>
+    <div >
+      <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Verified Successfully</h2>
+    </div>
+    <div >
+      <img src="https://res.cloudinary.com/dus9hgplo/image/upload/v1733147716/praplrjfqt3wgta1xvk1.png" alt="Right Logo" style="width: 80px; height: auto;">
+    </div>
+  </div>
+  <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">
+      Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
+    </p>
+    <p style="font-size: 16px; margin: 0 0 20px;">
+      You can now proceed with the next steps by joining the WhatsApp group.
+    </p>
+    <a href="https://chat.whatsapp.com/CBl5Jt2EorYBIrAphJFToX" style="text-decoration: none;">
+      <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
+        Join WhatsApp Group
+      </button>
+    </a>
+    <p style="margin-top: 20px; font-size: 16px;">Best regards,</p>
+    <p style="font-size: 16px; font-weight: bold; margin: 0;">Coding Blocks Kare 🤍</p>
+  </div>
+  <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px;">
+    <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
+  </div>
+</div>
+    `;
 
-//     await team.save()
-//     await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
-//     res.status(200).json({ message: "Team verified successfully" });
-//   } catch (err) {
-//     console.error("Error in /team/:id:", err);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
+    await team.save()
+    await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
+    res.status(200).json({ message: "Team verified successfully" });
 res.json("done")
 });
 
 router.get("/students", async (req, res) => {
   try {
-    const teams = await Event.find();
+    const teams = await Innov.find();
     res.status(200).json(teams);
   } catch (err) {
     console.error("Error in /students:", err);
@@ -259,7 +255,7 @@ router.post("/team/score/:id", async (req, res) => {
   console.log(req.body)
   const {team}=req.body;
   console.log(team)
-  let Team = await Event.findByIdAndUpdate(id,team);
+  let Team = await Innov.findByIdAndUpdate(id,team);
 res.json("done")
   }
   catch{
@@ -270,7 +266,7 @@ res.json("done")
 router.post("/pro/:id",async (req,res)=>{
   const { id } = req.params;
   const {projectId}=req.body;
-  const team = await Event.findById(id);
+  const team = await Innov.findById(id);
   team.ProblemID = projectId;
   await team.save();
   res.json("done")
@@ -279,7 +275,7 @@ router.post("/pro/:id",async (req,res)=>{
 router.post("/feedback/:id",async(req,res)=>{
   const { id } = req.params;
   const {feedback}=req.body;
-  const team = await Event.findById(id);
+  const team = await Innov.findById(id);
   team.FeedBack = feedback;
   await team.save();
   res.json("done")
@@ -317,4 +313,7 @@ router.get("/codebrake/students",async (req,res)=>{
   const students=await codebrack.find({})
   res.json(students)
 })
+
+
+
 module.exports = router;

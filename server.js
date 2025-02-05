@@ -37,6 +37,9 @@ app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
 })
 
+app.post('/' , (req , res)=>{
+    const {name,regnumber,year,email}=req.body
+})
 
 io.on("connection",(socket)=>{
     socket.on("join",(name)=>{
