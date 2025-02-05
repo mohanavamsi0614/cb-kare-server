@@ -88,7 +88,7 @@ io.on("connection",(socket)=>{
     })
 })
 
-server.listen(3000,async ()=>{
+server.listen(3001,async ()=>{
     await connectDB()
-    console.log(`http://localhost:3000`)
+    console.log(`http://localhost:3001`)
 })

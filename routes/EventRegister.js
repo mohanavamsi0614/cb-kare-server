@@ -104,14 +104,15 @@ catch{
 
 router.post("/register", async (req, res) => {
   try {
-    const { lead, members, upi, txn, url, teamName } = req.body;
+    const { name,email, members, upi, txn, url, teamname } = req.body;
+    console.log(req.body)
     const count=(await Innov.find({})).length
     console.log(count)
     if (count<70){
-    if (!lead || !lead.email || !teamName) {
+    if (!name || !email || !teamname) {
       return res.status(400).json({ error: "Missing required fields." });
     }
-    const Innov = await Innov.create(req.body);
+    const data = await Innov.create(req.body);
 
     const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
@@ -119,9 +120,9 @@ router.post("/register", async (req, res) => {
           <h2 style="margin: 0; font-size: 24px;">Payment Verification Under Pending</h2>
         </div>
         <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${lead.name}</strong>,</p>
+          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${name}</strong>,</p>
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-            Thank you for registering your team, <strong>${teamName}</strong>. Your submission is currently under verification. We’ll notify you as soon as the verification process is complete.
+            Thank you for registering your team, <strong>${teamname}</strong>. Your submission is currently under verification. We’ll notify you as soon as the verification process is complete.
           </p>
           <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
             If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
@@ -135,8 +136,8 @@ router.post("/register", async (req, res) => {
       </div>
     `;
 
-    sendEmail(lead.email, `Your team ${teamName} is under verification`, emailContent);
-    res.status(201).json({ message: "Team registered and email sent successfully", Innov });
+    sendEmail(email, `Your team ${teamname} is under verification`, emailContent);
+    res.status(201).json({ message: "Team registered and email sent successfully", data });
   }
   else{
     res.status(401).json({message:"Restration team got filled!"})
