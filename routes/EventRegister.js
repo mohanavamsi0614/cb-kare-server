@@ -186,8 +186,8 @@ router.get("/team/:id", async (req, res) => {
     const { id } = req.params;
     const {score}=req.body;
     const team = await Innov.findById(id);
-    let allm=team.members.map((i)=>{return i.regNumber+"@klu.ac.in"})
-    allm.push(team.lead.email)
+    let allm=team.members.map((i)=>{return i.registrationNumber+"@klu.ac.in"})
+    allm.push(team.email)
     if (!team) {
       return res.status(404).json({ error: "Team not found." });
     }
