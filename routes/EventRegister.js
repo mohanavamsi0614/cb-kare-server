@@ -184,7 +184,6 @@ router.delete("/team/:id",async(req,res)=>{
 router.get("/team/:id", async (req, res) => {
     console.log("local")
     const { id } = req.params;
-    const {score}=req.body;
     const team = await Innov.findById(id);
     let allm=team.teamMembers.map((i)=>{return i.registrationNumber+"@klu.ac.in"})
     allm.push(team.email)
@@ -196,7 +195,7 @@ router.get("/team/:id", async (req, res) => {
       return res.status(400).json({ error: "Lead email is missing." });
     }
 
-    team.Score = score;
+    team.verified = true;
     await team.save();
 
     const emailContent = `
@@ -235,7 +234,7 @@ router.get("/team/:id", async (req, res) => {
     `;
 
     await team.save()
-    await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
+    await sendEmail(allm, `Your Team ${team.teamname} is Verified`, emailContent);
     res.status(200).json({ message: "Team verified successfully" });
 res.json("done")
 });
