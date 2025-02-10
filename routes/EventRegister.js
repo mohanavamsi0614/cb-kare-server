@@ -161,7 +161,7 @@ router.delete("/team/:id",async(req,res)=>{
       <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Team Refund Successfull</h2>
   </div>
   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
-    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.name}</strong>,</p>
     <p style="font-size: 16px; margin: 0 0 15px;">
        Your team, <strong>${team.teamName}</strong>, has been successfully withdrawed.
     </p>
@@ -173,7 +173,7 @@ router.delete("/team/:id",async(req,res)=>{
   </div>
 </div>
     `;
-    sendEmail(team.lead.email,"Refund Succesfull",emailContent)
+    sendEmail(team.email,"Refund Succesfull",emailContent)
      res.status(200).json({ message: "Team refunded successfully" });
   } catch (err) {
     console.error("Error in /team/:id:", err);
@@ -213,7 +213,7 @@ router.get("/team/:id", async (req, res) => {
     </div>
   </div>
   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
-    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.lead.name}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.name}</strong>,</p>
     <p style="font-size: 16px; margin: 0 0 15px;">
       Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
     </p>
