@@ -12,7 +12,8 @@ const server=require("http").createServer(app)
 const io=socketio(server,{cors:{origin:"*"}})
 const cors=require("cors")
 const Event = require("./modles/event")
-const codebrack = require("./modles/codebrack")
+const codebreak = require("./modles/codebrack")
+const Innov=require("./modles/innov")
 // const limiter = rateLimit({
 //     windowMs: 60 * 1000, 
 //     max: 10, 
@@ -69,8 +70,8 @@ io.on("connection",(socket)=>{
         io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
     })
     socket.on("reg",async()=>{
-        const count=(await codebrack.find({})).length
-        if (count>=345){
+        const count=(await Innov.find({})).length
+        if (count>=70){
             io.emit("check","stop")
         }
         else{
@@ -78,8 +79,8 @@ io.on("connection",(socket)=>{
         }
     })
     socket.on("check",async()=>{
-        const count=(await codebrack.find({})).length
-        if (count>=345){
+        const count=(await Innov.find({})).length
+        if (count>=70){
             io.emit("see","stop")
         }
         else{
