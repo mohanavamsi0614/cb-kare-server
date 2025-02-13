@@ -27,7 +27,7 @@ const Innov=require("./modles/innov")
 // 
 
 // app.use(limiter);
-app.use(cors())
+app.use(cors({origin:"*"}))
 app.use(express.json())
 app.use("/user",UserRoutes)
 app.use("/event",EventRegister)

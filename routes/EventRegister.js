@@ -8,7 +8,7 @@ const { route } = require("./UserRoutes")
 const codebrack = require("../modles/codebrack")
 // router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 router.use(express.json())
-
+router.use(cors({origin:"*"}))
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
