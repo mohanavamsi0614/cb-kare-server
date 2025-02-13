@@ -110,6 +110,7 @@ router.post("/register", async (req, res) => {
     console.log(count)
     if (count<70){
     if (!name || !email || !teamname) {
+      console.log("eroor in required")
       return res.status(400).json({ error: "Missing required fields." });
     }
     const data = await Innov.create(req.body);
