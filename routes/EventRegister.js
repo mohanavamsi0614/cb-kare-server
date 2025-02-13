@@ -138,9 +138,12 @@ router.post("/register", async (req, res) => {
 
     sendEmail(email, `Your team ${teamname} is under verification`, emailContent);
     res.status(201).json({ message: "Team registered and email sent successfully", data });
+    return
   }
   else{
+    console.log("haaa")
     res.status(401).json({message:"Restration team got filled!"})
+    return
   }
   } catch (err) {
     console.error("Error in /register:", err);
