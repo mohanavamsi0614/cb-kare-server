@@ -71,7 +71,7 @@ io.on("connection",(socket)=>{
         io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
     })
     socket.on("reg",async()=>{
-        count++
+        const count=(await Innov.find({})).length
         if (count>=70){
             io.emit("check","stop")
         }
