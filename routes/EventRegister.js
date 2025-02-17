@@ -240,7 +240,6 @@ router.get("/team/:id", async (req, res) => {
     await team.save()
     await sendEmail(allm, `Your Team ${team.teamname} is Verified`, emailContent);
     res.status(200).json({ message: "Team verified successfully" });
-res.json("done")
 });
 
 router.get("/students", async (req, res) => {
