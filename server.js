@@ -27,6 +27,7 @@ const Innov=require("./modles/innov")
 // 
 
 // app.use(limiter);
+const count=0
 app.use(cors({origin:"*"}))
 app.use(express.json())
 app.use("/user",UserRoutes)
@@ -70,7 +71,7 @@ io.on("connection",(socket)=>{
         io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
     })
     socket.on("reg",async()=>{
-        const count=(await Innov.find({})).length
+        count++
         if (count>=70){
             io.emit("check","stop")
         }
