@@ -72,7 +72,7 @@ io.on("connection",(socket)=>{
     })
     socket.on("reg",async()=>{
         const count=(await Innov.find({})).length
-        if (count>=67){
+        if (count>=100){
             io.emit("check","stop")
         }
         else{
@@ -81,7 +81,7 @@ io.on("connection",(socket)=>{
     })
     socket.on("check",async()=>{
         const count=(await Innov.find({})).length
-        if (count>=67){
+        if (count>=100){
             io.emit("see","stop")
         }
         else{
