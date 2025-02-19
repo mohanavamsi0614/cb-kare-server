@@ -216,9 +216,9 @@ router.get("/team/:id", async (req, res) => {
     </div>
   </div>
   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
-    <p style="font-size: 16px; margin: 0 0 15px;">Hello <strong style="color: #E16254;">${team.name}</strong>,</p>
+    <p style="font-size: 16px; margin: 0 0 15px;">Hello ,</p>
     <p style="font-size: 16px; margin: 0 0 15px;">
-      Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
+      Congratulations! Your team, <strong>${team.teamname}</strong>, has been successfully verified.
     </p>
     <p style="font-size: 16px; margin: 0 0 20px;">
       You can now proceed with the next steps by joining the WhatsApp group.
