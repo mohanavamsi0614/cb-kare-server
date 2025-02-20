@@ -101,7 +101,14 @@ catch{
 }
   
 })
-
+router.post("/host",async(req,res)=>{
+  console.log(req.body)
+  const {host,id}=req.body
+  const innov=await Innov.findById(id)
+  innov.type=host
+  await innov.save()
+  res.send("done")
+})
 router.post("/register", async (req, res) => {
   try {
     const { name,email, members, upi, txn, url, teamname } = req.body;
