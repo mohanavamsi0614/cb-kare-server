@@ -5,6 +5,7 @@ const eventSchema=new mongoose.Schema({
 name: String,
 registrationNumber:String,
 room:String,
+type:String,
     teamMembers:Array,
     upiId:String,
     transtationId:String,
