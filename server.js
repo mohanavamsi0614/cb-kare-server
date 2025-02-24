@@ -14,6 +14,14 @@ const cors=require("cors")
 const Event = require("./modles/event")
 const codebreak = require("./modles/codebrack")
 const Innov=require("./modles/innov")
+let domains = [
+    { id: "1", name: "Healthcare & Biotech",slots:25 },
+    { id: "2", name: "Fintech & Blockchain",slots:25  },
+    { id: "3", name: "AI & Machine Learning",slots:25  },
+    { id: "4", name: "IoT & Smart Technologies",slots:25  },
+    { id: "5", name: "EdTech & E-Learning",slots:25  },
+    { id: "6", name: "Sustainability & CleanTech",slots:25  }
+]
 // const limiter = rateLimit({
 //     windowMs: 60 * 1000, 
 //     max: 10, 
@@ -48,14 +56,35 @@ io.on("connection",(socket)=>{
         console.log(name)
         socket.join(name)
     })
+    socket.on("domainSelected",async(team)=>{
+        const {teamId,domain}=team
+        console.log(team)
+        const Team=await Innov.findById(teamId)
+        console.log(domains.find((i)=>{return i.id==domain}))
+        Team.Domain=domains.find((i)=>{return i.id==domain}).name
+        await Team.save()
+        socket.join(Team.name)
+        socket.to(Team.name).emit("domainSelected","done")
+        domains.forEach((i)=>{ 
+            if(i.id==domain){
+               i.slots=i.slots-1
+            }})
+        console.log(domains)
+        socket.emit("domaindata",domains)
+    })
+    socket.on("domaindat",(res)=>{
+        console.log(res)
+        socket.emit("domaindata",domains)
+    })
     socket.on("admin",async(team)=>{
         console.log(team)
         const {name}=team
         socket.join(name)
-        const Team=await Event.findOne({teamName:name})
-        const {lead,members}=team
+        const Team=await Innov.findOne({teamname:name})
+        console.log(Team)
+        const {lead,teamMembers}=team
         Team.lead=lead
-        Team.members=members
+        Team.teamMembers=teamMembers
         io.to(name).emit("team",Team)
         await Team.save();
     })
@@ -63,12 +92,12 @@ io.on("connection",(socket)=>{
     socket.on("leaderboard",async(team)=>{
         const {teamName}=team
         console.log(team)
-        const Team=await Event.findOne({teamName:teamName})
-        Team.HuntScore +=team.HuntScore
+        const Team=await Innov.findOne({teamname:teamName})
+        Team.SquidScore +=team.SquidScore
         await Team.save()
         console.log(Team)
-        const teams=await Event.find();
-        io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
+        const teams=await Innov.find();
+        io.emit("leaderboard",teams.sort((a,b)=>{return b.SquidScore-a.SquidScore}));
     })
     socket.on("reg",async()=>{
         const count=(await Innov.find({})).length
