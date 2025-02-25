@@ -17,39 +17,57 @@ const Innov=require("./modles/innov")
 let domains = [
     { 
         id: "1", 
-        name: "Healthcare & Biotech",
-        slots: 25,
-        description: "Innovations in medical technology, biotechnology, digital health solutions, and healthcare delivery systems"
+        name: "EdTech",
+        slots: 10,
+        description: "Innovations for enhancing learning experiences, course management, and skill development."
     },
     { 
         id: "2", 
-        name: "Fintech & Blockchain",
-        slots: 25,
-        description: "Digital payments, cryptocurrency, decentralized finance, and innovative financial solutions"
+        name: "Campus Automation",
+        slots: 10,
+        description: "Solutions for smart attendance, resource allocation, and event management."
     },
     { 
         id: "3", 
-        name: "AI & Machine Learning",
-        slots: 25,
-        description: "Artificial intelligence applications, machine learning solutions, and intelligent automation systems"
+        name: "HealthTech",
+        slots: 10,
+        description: "Apps for mental health, fitness tracking, and on-campus medical assistance."
     },
     { 
         id: "4", 
-        name: "IoT & Smart Technologies",
-        slots: 25,
-        description: "Connected devices, smart home solutions, industrial IoT, and sensor-based applications"
+        name: "HostelConnect",
+        slots: 10,
+        description: "Platforms for room allocation, maintenance requests, and complaint tracking."
     },
     { 
         id: "5", 
-        name: "EdTech & E-Learning",
-        slots: 25,
-        description: "Digital learning platforms, educational technology, and innovative teaching solutions"
+        name: "FoodieHub",
+        slots: 10,
+        description: "Apps for food ordering, meal pre-booking, and digital payments."
     },
     { 
         id: "6", 
-        name: "Sustainability & CleanTech",
-        slots: 25,
-        description: "Green technology, renewable energy, environmental solutions, and sustainable practices"
+        name: "GreenCampus",
+        slots: 10,
+        description: "Eco-friendly solutions for waste management and energy efficiency."
+    },
+    { 
+        id: "7", 
+        name: "Transport Solutions",
+        slots: 10,
+        description: "Smart transportation, tracking, and optimization of on-campus buses and cabs."
+    },
+    { 
+        id: "8", 
+        name: "Student Engagement",
+        slots: 10,
+        description: "Apps for student clubs, campus events, and extracurricular activities management."
+    },
+    { 
+        id: "9", 
+        name: "Digital Learning Platforms",
+        slots: 10,
+        description: "Interactive e-learning platforms, content sharing, and peer-to-peer learning."
     }
 ]
 // const limiter = rateLimit({
