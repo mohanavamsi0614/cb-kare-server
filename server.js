@@ -63,8 +63,8 @@ io.on("connection",(socket)=>{
         console.log(domains.find((i)=>{return i.id==domain}))
         Team.Domain=domains.find((i)=>{return i.id==domain}).name
         await Team.save()
-        socket.join(Team.name)
-        socket.to(Team.name).emit("domainSelected","done")
+        socket.join(Team.teamname)
+        socket.to(Team.teamname).emit("domainSelected","done")
         domains.forEach((i)=>{ 
             if(i.id==domain){
                i.slots=i.slots-1
