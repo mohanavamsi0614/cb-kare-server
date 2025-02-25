@@ -15,12 +15,42 @@ const Event = require("./modles/event")
 const codebreak = require("./modles/codebrack")
 const Innov=require("./modles/innov")
 let domains = [
-    { id: "1", name: "Healthcare & Biotech",slots:25 },
-    { id: "2", name: "Fintech & Blockchain",slots:25  },
-    { id: "3", name: "AI & Machine Learning",slots:25  },
-    { id: "4", name: "IoT & Smart Technologies",slots:25  },
-    { id: "5", name: "EdTech & E-Learning",slots:25  },
-    { id: "6", name: "Sustainability & CleanTech",slots:25  }
+    { 
+        id: "1", 
+        name: "Healthcare & Biotech",
+        slots: 25,
+        description: "Innovations in medical technology, biotechnology, digital health solutions, and healthcare delivery systems"
+    },
+    { 
+        id: "2", 
+        name: "Fintech & Blockchain",
+        slots: 25,
+        description: "Digital payments, cryptocurrency, decentralized finance, and innovative financial solutions"
+    },
+    { 
+        id: "3", 
+        name: "AI & Machine Learning",
+        slots: 25,
+        description: "Artificial intelligence applications, machine learning solutions, and intelligent automation systems"
+    },
+    { 
+        id: "4", 
+        name: "IoT & Smart Technologies",
+        slots: 25,
+        description: "Connected devices, smart home solutions, industrial IoT, and sensor-based applications"
+    },
+    { 
+        id: "5", 
+        name: "EdTech & E-Learning",
+        slots: 25,
+        description: "Digital learning platforms, educational technology, and innovative teaching solutions"
+    },
+    { 
+        id: "6", 
+        name: "Sustainability & CleanTech",
+        slots: 25,
+        description: "Green technology, renewable energy, environmental solutions, and sustainable practices"
+    }
 ]
 // const limiter = rateLimit({
 //     windowMs: 60 * 1000, 
@@ -90,9 +120,9 @@ io.on("connection",(socket)=>{
     })
 
     socket.on("leaderboard",async(team)=>{
-        const {teamName}=team
+        const {teamname}=team
         console.log(team)
-        const Team=await Innov.findOne({teamname:teamName})
+        const Team=await Innov.findOne({teamname:teamname})
         Team.SquidScore +=team.SquidScore
         await Team.save()
         console.log(Team)
