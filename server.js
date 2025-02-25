@@ -77,11 +77,35 @@ app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
 })
 
-app.post('/' , (req , res)=>{
-    const {name,regnumber,year,email}=req.body
+app.post('/pic' , async(req , res)=>{
+    try{
+    const {id,photo}=req.body
+    const Team=await Innov.findById(id)
+    Team.GroupPic=photo
+    await Team.save()
+    res.json("done")
+    }
+    catch(r){
+        console.log(r)
+        res.send(r)
+    }
 })
+app.post("/problemSta",async (req,res)=>{
+    try{
+    const {id,PS}=req.body
+    const Team=await Innov.findById(id)
+    Team.ProblemStatement=PS
+    await Team.save()
+    res.json(PS)
+    }
+    catch(r){
+        console.log(r)
+        res.send(r)
+    }
 
+})
 io.on("connection",(socket)=>{
+
     socket.on("join",(name)=>{
         console.log(name)
         socket.join(name)
