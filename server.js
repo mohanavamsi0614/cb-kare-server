@@ -128,6 +128,9 @@ io.on("connection",(socket)=>{
         console.log(name)
         socket.join(name)
     })
+    socket.on("eventupdates",(text)=>{
+        io.emit("eventupdates",text)
+    })
     socket.on("domainSelected",async(team)=>{
         const {teamId,domain}=team
         console.log(team)
