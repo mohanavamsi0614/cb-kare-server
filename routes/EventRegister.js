@@ -254,11 +254,12 @@ router.get("/students", async (req, res) => {
 router.post("/team/score/:id", async (req, res) => {
   try{
   console.log("local")
-  const { id } = req.params;
+  const { id,FirstReview } = req.params;
   console.log(req.body)
-  const {team}=req.body;
   console.log(team)
-  let Team = await Innov.findByIdAndUpdate(id,team);
+  let Team = await Innov.findById(id,team);
+  Team.FirstReview=FirstReview
+  await Team.save()
 res.json("done")
   }
   catch{
