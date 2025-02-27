@@ -22,7 +22,6 @@ GroupPic:String,
     ThirdReview:Object,
     FirstReviewScore:{type:Number,default:0},
     SecoundReviewScore:{type:Number,default:0},
-    ThirdReviewScore:{type:Number,default:0},
     FinalScore:Number
 })
 const Event=mongoose.model("innov",eventSchema)
