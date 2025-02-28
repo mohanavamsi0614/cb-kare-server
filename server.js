@@ -44,13 +44,13 @@ let domains = [
     { 
         id: "5", 
         name: "FoodieHub",
-        slots: 1,
+        slots: 10,
         description: "Apps for food ordering, meal pre-booking, and digital payments."
     },
     { 
         id: "6", 
         name: "GreenCampus",
-        slots: 1,
+        slots: 10,
         description: "Eco-friendly solutions for waste management and energy efficiency."
     },
     { 
