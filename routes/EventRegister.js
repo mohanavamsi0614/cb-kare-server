@@ -263,9 +263,9 @@ router.post("/team/score/:id", async (req, res) => {
   await Team.save()
 res.json("done")
   }
-  catch{
+  catch(e){
+    console.log(e)
     res.status(420).json("Don't act smart")
-
   }
 });
 router.post("/pro/:id",async (req,res)=>{

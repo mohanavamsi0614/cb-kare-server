@@ -14,6 +14,8 @@ const cors=require("cors")
 const Event = require("./modles/event")
 const codebreak = require("./modles/codebrack")
 const Innov=require("./modles/innov")
+const Food=require("./modles/Food")
+let prev=""
 let domains = [
     { 
         id: "1", 
@@ -42,13 +44,13 @@ let domains = [
     { 
         id: "5", 
         name: "FoodieHub",
-        slots: 10,
+        slots: 1,
         description: "Apps for food ordering, meal pre-booking, and digital payments."
     },
     { 
         id: "6", 
         name: "GreenCampus",
-        slots: 10,
+        slots: 1,
         description: "Eco-friendly solutions for waste management and energy efficiency."
     },
     { 
@@ -94,7 +96,17 @@ app.use("/pay",pay)
 app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
 })
-
+app.post("/food",async(req,res)=>{
+    const food=await Food.create(req.body)
+    if(food){
+        res.status(401).json("Already Food Booked")
+    }
+    res.status(201).json(food)
+})
+app.get("/food",async(req,res)=>{
+    const foods=await Food.find({})
+    res.json(foods)
+})
 app.post('/pic' , async(req , res)=>{
     try{
     const {id,photo}=req.body
@@ -129,27 +141,34 @@ io.on("connection",(socket)=>{
         socket.join(name)
     })
     socket.on("eventupdates",(text)=>{
+        prev=text
         io.emit("eventupdates",text)
+    })
+    socket.on("prevevent",()=>{
+        io.emit("eventupdates",prev)
     })
     socket.on("domainSelected",async(team)=>{
         const {teamId,domain}=team
+        if(domains.find((i)=>{return i.id==domain}).slots==0){
+            io.emit("domaindata","fulled")
+        }
         console.log(team)
         const Team=await Innov.findById(teamId)
-        console.log(domains.find((i)=>{return i.id==domain}))
-        Team.Domain=domains.find((i)=>{return i.id==domain}).name
-        await Team.save()
         socket.join(Team.teamname)
-        io.to(Team.teamname).emit("domainSelected","done")
+        io.to(Team.teamname).emit("domainSelected",domains.find((i)=>{return i.id==domain}))
         domains.forEach((i)=>{ 
             if(i.id==domain){
                i.slots=i.slots-1
             }})
         console.log(domains)
-        socket.emit("domaindata",domains)
+        io.emit("domaindata",domains)
+        console.log(domains.find((i)=>{return i.id==domain}))
+
+        Team.Domain=domains.find((i)=>{return i.id==domain}).name
+        await Team.save()
     })
     socket.on("domaindat",(res)=>{
-        console.log(res)
-        socket.emit("domaindata",domains)
+        io.emit("domaindata",domains)
     })
     socket.on("admin",async(team)=>{
         console.log(team)
@@ -166,12 +185,17 @@ io.on("connection",(socket)=>{
 
     socket.on("leaderboard",async(team)=>{
         const {teamname}=team
-        console.log(team)
         const Team=await Innov.findOne({teamname:teamname})
-        Team.SquidScore +=team.SquidScore
+        if(Team.SquidScore){
+            Team.SquidScore +=team.SquidScore
+        }
+        else{
+            Team.SquidScore=team.SquidScore
+        }
         await Team.save()
-        console.log(Team)
-        const teams=await Innov.find();
+        let teams=await Innov.find({});
+        teams=teams.sort((a,b)=>{return b.SquidScore-a.SquidScore})
+        console.log(teams)
         io.emit("leaderboard",teams.sort((a,b)=>{return b.SquidScore-a.SquidScore}));
     })
     socket.on("reg",async()=>{
