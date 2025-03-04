@@ -27,7 +27,7 @@ let domains = [
         id: "2", 
         name: "Campus Automation",
         slots: 10,
-        description: "Solutions for smart attendance, resource allocation, and event management."
+        description: "Solutions for smart attendance, resource allocation."
     },
     { 
         id: "3", 
@@ -72,6 +72,7 @@ let domains = [
         description: "Interactive e-learning platforms, content sharing, and peer-to-peer learning."
     }
 ]
+let domainStat=false
 // const limiter = rateLimit({
 //     windowMs: 60 * 1000, 
 //     max: 10, 
@@ -146,6 +147,13 @@ io.on("connection",(socket)=>{
     })
     socket.on("prevevent",()=>{
         io.emit("eventupdates",prev)
+    })
+    socket.on("domainStat",()=>{
+        io.emit("domainStat",domainStat)
+    })
+    socket.on("domainOpen",()=>{
+        domainStat=true
+        io.emit("domainStat",true)
     })
     socket.on("domainSelected",async(team)=>{
         const {teamId,domain}=team

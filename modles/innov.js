@@ -40,8 +40,9 @@ async function data(){
         console.log(i.teamname,password)
         i.password=password
         }
+        await i.save()
     }
     console.log("done")
 
 }
-data()
+// data()
