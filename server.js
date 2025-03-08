@@ -97,11 +97,11 @@ app.use("/pay",pay)
 app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
 })
-app.post("/food",async(req,res)=>{
+
+
+app.post("/food",async (req,res)=>{
+    console.log(req.body)
     const food=await Food.create(req.body)
-    if(food){
-        res.status(401).json("Already Food Booked")
-    }
     res.status(201).json(food)
 })
 app.get("/food",async(req,res)=>{
