@@ -98,12 +98,29 @@ app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
 })
 
+app.post("/food", async (req, res) => {
+    try {
+        const existingFood = await Food.findOne({teamname: req.body.teamname});
+        // console.log(existingFood);
+        
+        if (existingFood) {
+            if (req.body.food && Array.isArray(req.body.food)) {
+                existingFood.food = existingFood.food.concat(req.body.food);
+            }
+            existingFood.price +=req.body.price
+            await existingFood.save();
+            res.json(existingFood);
+        } else {
+            const newFood = await Food.create(req.body);
+            res.json(newFood);
+        }
+        
+    } catch (error) {
+        console.error("Error handling food:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
-app.post("/food",async (req,res)=>{
-    console.log(req.body)
-    const food=await Food.create(req.body)
-    res.status(201).json(food)
-})
 app.get("/food",async(req,res)=>{
     const foods=await Food.find({})
     res.json(foods)
