@@ -151,10 +151,9 @@ io.on("connection",(socket)=>{
     socket.on("domainStat",()=>{
         io.emit("domainStat",domainStat)
     })
-    socket.on('domainOpen', (data) => {
-        console.log(data)
-           domainStat = data.open
-        io.emit('domainStat', domainStat);
+    socket.on("domainOpen",()=>{
+        domainStat=true
+        io.emit("domainStat",true)
     })
     socket.on("domainSelected",async(team)=>{
         const {teamId,domain}=team
