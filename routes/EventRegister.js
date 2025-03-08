@@ -255,10 +255,10 @@ router.post("/team/score/:id", async (req, res) => {
   try{
   console.log("local")
   const { id } = req.params;
-  const {FirstReview,score}=req.body
+  const {SecoundReview,score}=req.body
   let Team = await Innov.findById(id);
-  Team.FirstReview=FirstReview
-  Team.FirstReviewScore=score
+  Team.SecoundReview=SecoundReview
+  Team.SecoundReviewScore=score
   Team.FinalScore=Team.FirstReviewScore+Team.SecoundReviewScore
   await Team.save()
 res.json("done")
