@@ -30,15 +30,12 @@ module.exports=Event;
 
 async function data(){
     const teams= await Event.find({})
-    let pass=[]
     for (let i of teams){
-        const password=i.registrationNumber.slice(-1)+i.teamMembers.map((i)=>{return i.registrationNumber.slice(-1)}).join("")
-        if(pass.includes(password)){
-            console.log("Ammooooooooooo---------",password,i.teamname)
-        }
-        else{
-        console.log(i.teamname,password)
-        i.password=password
+        if(i.SecoundReviewScore){
+            console.log(i.teamname)
+            i.FirstReviewScore=i.SecoundReviewScore
+            i.SecoundReviewScore=0
+            
         }
         await i.save()
     }

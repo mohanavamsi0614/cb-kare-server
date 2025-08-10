@@ -6,6 +6,7 @@ const cerficate=require("./routes/certificate")
 const cer=require("./modles/certificate")
 const socketio = require("socket.io");
 const pay=require("./routes/payment")
+const Genisis=require("./modles/Gensis")
 const Teams=require("./modles/event")
 const app=express()
 const server=require("http").createServer(app)
@@ -101,7 +102,6 @@ app.get("/",(req,res)=>{
 app.post("/food", async (req, res) => {
     try {
         const existingFood = await Food.findOne({teamname: req.body.teamname});
-        // console.log(existingFood);
         
         if (existingFood) {
             if (req.body.food && Array.isArray(req.body.food)) {
@@ -223,18 +223,9 @@ io.on("connection",(socket)=>{
         console.log(teams)
         io.emit("leaderboard",teams.sort((a,b)=>{return b.SquidScore-a.SquidScore}));
     })
-    socket.on("reg",async()=>{
-        const count=(await Innov.find({})).length
-        if (count>=90){
-            io.emit("check","stop")
-        }
-        else{
-            io.emit("check","ok")
-        }
-    })
     socket.on("check",async()=>{
-        const count=(await Innov.find({})).length
-        if (count>=90){
+        const count=(await Genisis.find({})).length
+        if (count>=50){
             io.emit("see","stop")
         }
         else{

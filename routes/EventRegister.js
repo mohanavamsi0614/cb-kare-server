@@ -1,11 +1,10 @@
 const express=require("express")
 const router=express.Router()
 const Innov=require("../modles/innov")
+const Genisis=require("../modles/Gensis")
 const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
-const { route } = require("./UserRoutes")
-const codebrack = require("../modles/codebrack")
 // router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 router.use(express.json())
 router.use(cors({origin:"*"}))
@@ -17,25 +16,29 @@ const transporter = nodemailer.createTransport({
   },
 });
 const paymentVerificationTemplate = (studentName) => `
- <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
-        <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-          <h2 style="margin: 0; font-size: 24px;">Payment Verification Under Pending</h2>
-        </div>
-        <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${studentName}</strong>,</p>
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-Thank you for Registering <strong style="text-[#E16254]">Code Breaker Challenge.</strong> Your payment is under verification. We'll notify you once the verification process is completed.          </p>
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-            If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
-          </p>
-          <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
-          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
-        </div>
-         
-        <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0;">&copy; 2025 Team. All rights reserved.</p>
-        </div>
-      </div>
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
+  <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+    <h2 style="margin: 0; font-size: 24px;">Team Verification in Progress</h2>
+  </div>
+  <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
+    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+      Hello <strong style="color: #E16254;">${studentName}</strong>,
+    </p>
+    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+      Thank you for registering for the <strong style="color: #E16254;">Genesis Hackathon</strong>!  
+      Your team details are currently under verification. No worries — we’ll send you a confirmation email as soon as the verification is complete.
+    </p>
+    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+      If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
+    </p>
+    <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
+    <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
+  </div>
+
+  <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
+    <p style="margin: 0;">&copy; 2025 Team. All rights reserved.</p>
+  </div>
+</div>
 `;
 const registrationSuccessfulTemplate = (studentName) => `
   
@@ -87,10 +90,10 @@ const sendEmail = async (to, subject, html) => {
   }
 };
 
-router.post("/team/:password",async(req,res)=>{
+router.post("/gen/team/:password",async(req,res)=>{
   try{
   const {password}=req.params
-  const team=await Innov.findOne({password:password})
+  const team=await Genisis.findOne({password:password})
   if(team){
     return res.json(team);
   }
@@ -102,55 +105,25 @@ catch{
   
 })
 
-router.post("/register", async (req, res) => {
+router.post("/gen/register",async(req,res)=>{
+  const { body } = req;
+  console.log(body)
   try {
-    const { name,email, members, upi, txn, url, teamname } = req.body;
-    console.log(req.body)
-    const count=(await Innov.find({})).length
-    console.log(count)
-    if (count<90){
-    if (!name || !email || !teamname) {
-      console.log("eroor in required")
-      return res.status(400).json({ error: "Missing required fields." });
+    const count = (await Genisis.find({})).length;
+    console.log(count);
+    if (count < 50) {
+      const team = await Genisis.create(body);
+      const emailContent = paymentVerificationTemplate(team.lead.name);
+      sendEmail(team.lead.email, "Your Payment under Verification", emailContent);
+      res.json("done");
+    } else {
+      res.status(401).json("all done");
     }
-    const data = await Innov.create(req.body);
-
-    const emailContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
-        <div style="background: #E16254; color: #ECE8E7; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-          <h2 style="margin: 0; font-size: 24px;">Payment Verification Under Pending</h2>
-        </div>
-        <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd;">
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Hello <strong style="color: #E16254;">${name}</strong>,</p>
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-            Thank you for registering your team, <strong>${teamname}</strong>. Your submission is currently under verification. We’ll notify you as soon as the verification process is complete.
-          </p>
-          <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
-            If you have any questions, feel free to <a href="mailto:${process.env.MAIL}" style="color: #E16254; text-decoration: none;">contact us</a>.
-          </p>
-          <p style="font-size: 16px; line-height: 1.5;">Best regards,</p>
-          <p style="font-size: 16px; line-height: 1.5; font-weight: bold;">Coding Blocks Kare 🤍</p>
-        </div>
-        <div style="background: #919294; color: #ECE8E7; text-align: center; padding: 10px; font-size: 14px; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0;">&copy; 2024 Team. All rights reserved.</p>
-        </div>
-      </div>
-    `;
-
-    sendEmail(email, `Your team ${teamname} is under verification`, emailContent);
-    res.status(201).json({ message: "Team registered and email sent successfully", data });
-    return
-  }
-  else{
-    console.log("haaa")
-    res.status(401).json({message:"Restration team got filled!"})
-    return
-  }
   } catch (err) {
-    console.error("Error in /register:", err);
+    console.error("Error in /gen/register:", err);
     res.status(500).json({ error: "Internal server error" });
   }
-});
+})
 
 router.delete("/team/:id",async(req,res)=>{
   try {
@@ -188,7 +161,7 @@ router.delete("/team/:id",async(req,res)=>{
 router.get("/team/:id", async (req, res) => {
     console.log("local")
     const { id } = req.params;
-    const team = await Innov.findById(id);
+    const team = await Genisis.findById(id);
     let allm=team.teamMembers.map((i)=>{return i.registrationNumber+"@klu.ac.in"})
     allm.push(team.email)
     if (!team) {
@@ -242,15 +215,18 @@ router.get("/team/:id", async (req, res) => {
     res.status(200).json({ message: "Team verified successfully" });
 });
 
-router.get("/students", async (req, res) => {
+router.get("/teams", async (req, res) => {
   try {
-    const teams = await Innov.find();
+    const teams = await Genisis.find({});
     res.status(200).json(teams);
   } catch (err) {
     console.error("Error in /students:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+
 router.post("/team/score/:id", async (req, res) => {
   try{
   console.log("local")
@@ -277,47 +253,6 @@ router.post("/pro/:id",async (req,res)=>{
   res.json("done")
 })
 
-router.post("/feedback/:id",async(req,res)=>{
-  const { id } = req.params;
-  const {feedback}=req.body;
-  const team = await Innov.findById(id);
-  team.FeedBack = feedback;
-  await team.save();
-  res.json("done")
-})
-
-router.post("/codebrake/register", async (req, res) => {
-  const { body } = req;
-  const count=(await codebrack.find({})).length
-    console.log(count)
-    if (count<345){
-      console.log("gihwe")
-  const student = await codebrack.create(body);
-  const emailContent = paymentVerificationTemplate(student.name);
-  sendEmail(student.email, "Your Payment under Verification", emailContent);
-  res.json("done");
-    }
-    else{
-      res.status(401).json("all done")
-    }
-});
-
-router.get("/codebrake/student/:id", async (req, res) => {
-  const { id } = req.params;
-  const student = await codebrack.findById(id);
-  student.verifyed = true;
-  await student.save();
-
-  const emailContent = registrationSuccessfulTemplate(student.name);
-  sendEmail(student.email, "Registration Successful", emailContent);
-  
-  res.json("done");
-});
-
-router.get("/codebrake/students",async (req,res)=>{
-  const students=await codebrack.find({})
-  res.json(students)
-})
 
 
 
