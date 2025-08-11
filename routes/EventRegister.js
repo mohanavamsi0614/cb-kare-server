@@ -5,7 +5,6 @@ const Genisis=require("../modles/Gensis")
 const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
-// router.use(cors({origin:"https://build-a-bot-coral.vercel.app"}))
 router.use(express.json())
 router.use(cors({origin:"*"}))
 const transporter = nodemailer.createTransport({
@@ -161,9 +160,11 @@ router.delete("/team/:id",async(req,res)=>{
 router.get("/team/:id", async (req, res) => {
     console.log("local")
     const { id } = req.params;
+    console.log(id)
     const team = await Genisis.findById(id);
-    let allm=team.teamMembers.map((i)=>{return i.registrationNumber+"@klu.ac.in"})
-    allm.push(team.email)
+    console.log(team)
+    let allm=team.members.map((i)=>{return i.email})
+    allm.push(team.lead.email)
     if (!team) {
       return res.status(404).json({ error: "Team not found." });
     }
@@ -191,7 +192,7 @@ router.get("/team/:id", async (req, res) => {
   <div style="padding: 20px; background: #ffffff; border: 1px solid #ddd; line-height: 1.6;">
     <p style="font-size: 16px; margin: 0 0 15px;">Hello ,</p>
     <p style="font-size: 16px; margin: 0 0 15px;">
-      Congratulations! Your team, <strong>${team.teamname}</strong>, has been successfully verified.
+      Congratulations! Your team, <strong>${team.teamName}</strong>, has been successfully verified.
     </p>
     <p style="font-size: 16px; margin: 0 0 20px;">
       You can now proceed with the next steps by joining the WhatsApp group.
@@ -218,7 +219,7 @@ router.get("/team/:id", async (req, res) => {
 router.get("/teams", async (req, res) => {
   try {
     const teams = await Genisis.find({});
-    res.status(200).json(teams);
+    res.status(200).json(teams)
   } catch (err) {
     console.error("Error in /students:", err);
     res.status(500).json({ error: "Internal server error" });
@@ -252,8 +253,4 @@ router.post("/pro/:id",async (req,res)=>{
   await team.save();
   res.json("done")
 })
-
-
-
-
 module.exports = router;
