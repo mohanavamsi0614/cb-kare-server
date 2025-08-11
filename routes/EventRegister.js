@@ -169,7 +169,7 @@ router.get("/team/:id", async (req, res) => {
       return res.status(404).json({ error: "Team not found." });
     }
 
-    if (!team || !team.email) {
+    if (!team || !team.lead.email) {
       return res.status(400).json({ error: "Lead email is missing." });
     }
 
@@ -212,7 +212,7 @@ router.get("/team/:id", async (req, res) => {
     `;
 
     await team.save()
-    await sendEmail(allm, `Your Team ${team.teamname} is Verified`, emailContent);
+    await sendEmail(allm, `Your Team ${team.teamName} is Verified`, emailContent);
     res.status(200).json({ message: "Team verified successfully" });
 });
 
