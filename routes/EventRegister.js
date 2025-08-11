@@ -197,7 +197,7 @@ router.get("/team/:id", async (req, res) => {
     <p style="font-size: 16px; margin: 0 0 20px;">
       You can now proceed with the next steps by joining the WhatsApp group.
     </p>
-    <a href="https://chat.whatsapp.com/IiutiJ3D7bR2NR8lVimsLJ" style="text-decoration: none;">
+    <a href="https://chat.whatsapp.com/DtF9nmW3N2b4bgKpfBFGpB?mode=ac_t" style="text-decoration: none;">
       <button style="width: 100%; cursor: pointer; max-width: 300px; height: 40px; border: none; background: green; color: #ECE8E7; border-radius: 10px; font-size: 16px; font-weight: bold; transition: background 0.3s ease;">
         Join WhatsApp Group
       </button>
