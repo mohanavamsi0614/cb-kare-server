@@ -1,27 +1,28 @@
-const Innov = require("./modles/innov")
+const Gen = require("./modles/Gensis.js")
 const connectDB = require("./db")
-const sectors=["456","067","101","001","218","199"]
-const generateTeamPassword = async () => {
+async function doSomething() {
     try {
         await connectDB()
-        const teams = await Innov.find({})
-        
-        console.log("\n=== Team Passwords and Sectors ===\n")
-        
-        for (let i = 0; i < teams.length; i++) {
-            const team = teams[i]
-            const sectorIndex = Math.floor(i / 15)
-            const sector = sectors[sectorIndex] 
-            team.Sector = sector
-            await team.save()
-            console.log(`S.no ${i+1} Sector ${sector} | Team: ${team.teamname.padEnd(20)}`)
+        let it=0
+        const teams=await Gen.find({})
+        for (let team of teams) {
+        console.log(team.lead.email.slice(6,8))
+        if(team.lead.email.slice(6,8)=="80"){
+            it++
         }
-        console.log("\n=== End of Passwords and Sectors ===\n")
-    } catch (error) {
-        console.error("Error generating passwords and sectors:", error)
-    } finally {
-        process.exit()
-    }
-}
+        for(let mem of team.members) {
+            console.log(mem.email.slice(6,8))
+            if(mem.email.slice(6,8)=="80"){
+                it++
+            }
+        }
 
-generateTeamPassword()
+    }
+    console.log("Total teams with 80 in email:", it)
+    return it
+}
+catch (error) {
+    console.error("Error:", error)
+}
+}
+doSomething()

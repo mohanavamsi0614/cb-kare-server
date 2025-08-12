@@ -83,11 +83,13 @@ const sendEmail = async (to, subject, html) => {
       subject,
       html,
     });
+    console.log(`Email sent to ${to}`);
   } catch (err) {
     console.error("Error sending email:", err);
     throw new Error("Email delivery failed");
   }
 };
+
 
 router.post("/gen/team/:password",async(req,res)=>{
   try{
