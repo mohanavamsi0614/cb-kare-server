@@ -112,7 +112,7 @@ router.post("/gen/register",async(req,res)=>{
   try {
     const count = (await Genisis.find({})).length;
     console.log(count);
-    if (count < 70) {
+    if (count < 69) {
       const team = await Genisis.create(body);
       const emailContent = paymentVerificationTemplate(team.lead.name);
       sendEmail(team.lead.email, "Your Payment under Verification", emailContent);
