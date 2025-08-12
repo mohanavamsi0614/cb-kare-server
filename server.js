@@ -225,7 +225,7 @@ io.on("connection",(socket)=>{
     })
     socket.on("check",async()=>{
         const count=(await Genisis.find({})).length
-        if (count>=50){
+        if (count>=70){
             io.emit("see","stop")
         }
         else{

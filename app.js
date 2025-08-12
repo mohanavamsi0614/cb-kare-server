@@ -6,13 +6,13 @@ async function doSomething() {
         let it=0
         const teams=await Gen.find({})
         for (let team of teams) {
-        console.log(team.lead.email.slice(6,8))
-        if(team.lead.email.slice(6,8)=="80"){
+        console.log(team.lead.email.slice(6,7))
+        if(team.lead.email.slice(6,7)=="8"){
             it++
         }
         for(let mem of team.members) {
-            console.log(mem.email.slice(6,8))
-            if(mem.email.slice(6,8)=="80"){
+            console.log(mem.email.slice(6,7))
+            if(mem.email.slice(6,7)=="8"){
                 it++
             }
         }
