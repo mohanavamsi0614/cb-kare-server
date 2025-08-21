@@ -94,6 +94,7 @@ app.use("/user",UserRoutes)
 app.use("/event",EventRegister)
 app.use("/cerficate",cerficate)
 app.use("/pay",pay)
+app.use("/genisis",require("./routes/Genisis"))
 
 app.get("/",(req,res)=>{
     res.send("hi i am server for coding blocks kare")
@@ -225,7 +226,7 @@ io.on("connection",(socket)=>{
     })
     socket.on("check",async()=>{
         const count=(await Genisis.find({})).length
-        if (count>=99){
+        if (count>=81){
             io.emit("see","stop")
         }
         else{
