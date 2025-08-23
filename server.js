@@ -215,7 +215,7 @@ io.on("connection",(socket)=>{
         // Team.teamMembers=teamMembers
         // io.to(name).emit("team",Team)
         console.log(Team)
-        //  io.to(name).emit("team",Team)
+         io.to(name).emit("team",Team)
         await Team.save();
     })
 
