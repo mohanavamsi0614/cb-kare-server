@@ -200,12 +200,22 @@ io.on("connection",(socket)=>{
         console.log(team)
         const {name}=team
         socket.join(name)
-        const Team=await Innov.findOne({teamname:name})
+        const Team=await Genisis.findById(team.id)
+        Team.lead.firstAttdStatus=team.lead ? "present" : "absent"
+        Team.markModified('lead') 
+
+        for(let i=0; i<team.members.length; i++){
+            const member=team.members[i]
+            Team.members[i].firstAttdStatus=member ? "present" : "absent"
+        }
+        Team.markModified('members')
+        // console.log(Team)
+        // const {lead,teamMembers}=team
+        // Team.lead=lead
+        // Team.teamMembers=teamMembers
+        // io.to(name).emit("team",Team)
         console.log(Team)
-        const {lead,teamMembers}=team
-        Team.lead=lead
-        Team.teamMembers=teamMembers
-        io.to(name).emit("team",Team)
+        //  io.to(name).emit("team",Team)
         await Team.save();
     })
 
