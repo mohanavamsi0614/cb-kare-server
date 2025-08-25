@@ -25,4 +25,16 @@ catch (error) {
     console.error("Error:", error)
 }
 }
-doSomething()
+
+async function sort(){
+            await connectDB()
+
+    let teams = await (await Gen.find({})).map((i)=>i.teamName)
+    teams = teams.sort((a, b) => a.localeCompare(b));
+
+    console.log(teams)
+    return teams
+}
+// doSomething()
+
+sort()

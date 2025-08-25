@@ -221,18 +221,28 @@ io.on("connection",(socket)=>{
 
     socket.on("leaderboard",async(team)=>{
         const {teamname}=team
-        const Team=await Innov.findOne({teamname:teamname})
-        if(Team.SquidScore){
-            Team.SquidScore +=team.SquidScore
+        console.log(team)
+        const Team=await Genisis.findOne({teamName:teamname})
+        if(Team.HuntScore){
+            Team.HuntScore +=team.HuntScore
         }
         else{
-            Team.SquidScore=team.SquidScore
+            Team.HuntScore=team.HuntScore
         }
         await Team.save()
-        let teams=await Innov.find({});
-        teams=teams.sort((a,b)=>{return b.SquidScore-a.SquidScore})
+      let teams=await Genisis.find({});
+        teams=teams.sort((a,b)=>{return b.HuntScore-a.HuntScore})
         console.log(teams)
-        io.emit("leaderboard",teams.sort((a,b)=>{return b.SquidScore-a.SquidScore}));
+        io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
+    })
+    socket.on("ps",async (team)=>{
+        const {teamname}=team
+        console.log(team)
+        socket.join(teamname)
+        const Team=await Genisis.findOne({teamName:teamname})
+        Team.ProblemStatement +=team.Ps
+        await Team.save()
+        io.to(teamname).emit("ps",Team.ProblemStatement)
     })
     socket.on("check",async()=>{
         const count=(await Genisis.find({})).length
