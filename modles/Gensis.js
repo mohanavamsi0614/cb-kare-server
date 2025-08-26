@@ -18,7 +18,7 @@ const eventSchema = new mongoose.Schema({
     SecondReviewScore: { type: Number, default: 0 },
     FinalScore: Number,
     Sector: String,
-    theme: String,
+    teampic: String,
     paymenttype: String,
 });
 

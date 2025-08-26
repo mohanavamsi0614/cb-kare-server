@@ -232,7 +232,7 @@ io.on("connection",(socket)=>{
         await Team.save()
       let teams=await Genisis.find({});
         teams=teams.sort((a,b)=>{return b.HuntScore-a.HuntScore})
-        console.log(teams)
+        console.log("teams")
         io.emit("leaderboard",teams.sort((a,b)=>{return b.HuntScore-a.HuntScore}));
     })
     socket.on("ps",async (team)=>{

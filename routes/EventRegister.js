@@ -126,6 +126,7 @@ router.post("/gen/register",async(req,res)=>{
   }
 })
 
+
 router.delete("/team/:id",async(req,res)=>{
   try {
     const { id } = req.params;
