@@ -5,6 +5,7 @@ const Genisis=require("../modles/Gensis")
 const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
+const mongoose = require("mongoose");
 router.use(express.json())
 router.use(cors({origin:"*"}))
 const transporter = nodemailer.createTransport({
@@ -232,22 +233,38 @@ router.get("/teams", async (req, res) => {
 
 
 router.post("/team/score/:id", async (req, res) => {
-  try{
-  console.log("local")
-  const { id } = req.params;
-  const {SecoundReview,score}=req.body
-  let Team = await Innov.findById(id);
-  Team.SecoundReview=SecoundReview
-  Team.SecoundReviewScore=score
-  Team.FinalScore=Team.FirstReviewScore+Team.SecoundReviewScore
-  await Team.save()
-res.json("done")
-  }
-  catch(e){
-    console.log(e)
-    res.status(420).json("Don't act smart")
+  try {
+    const { id } = req.params;
+    const { FirstReview, FirstScore, SecondReview, SecondScore } = req.body;
+
+    let Team = await Genisis.findById(id);
+
+    if (!Team) {
+      return res.status(404).json({ error: "Team not found" });
+    }
+
+    if (FirstReview) {
+      Team.FirstReview = FirstReview;
+      Team.FirstReviewScore = FirstScore;
+    }
+
+    if (SecondReview) {
+      Team.SecondReview = SecondReview;      
+      Team.SecondReviewScore = SecondScore;       
+    }
+
+    Team.FinalScore =
+      (Team.FirstReviewScore || 0) + (Team.SecoundReviewScore || 0);
+
+    await Team.save();
+    return res.json({ message: "done", FinalScore: Team.FinalScore });
+  } catch (e) {
+    console.error("Error saving team score:", e);
+    res.status(500).json({ error: "Server error, check logs" });
   }
 });
+
+
 router.post("/pro/:id",async (req,res)=>{
   const { id } = req.params;
   const {projectId}=req.body;
