@@ -10,7 +10,7 @@ const eventSchema = new mongoose.Schema({
     ProblemStatement: String,
     Domain: String,
     HuntScore: { type: Number, default: 0 },
-    password: String,
+    pass: String,
     FirstReview: Object,
     SecondReview: Object,
     ThirdReview: Object,

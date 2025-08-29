@@ -17,6 +17,8 @@ const codebreak = require("./modles/codebrack")
 const Innov=require("./modles/innov")
 const Food=require("./modles/Food")
 let prev=""
+let currAttd=0
+let attds=["0","firstAttdStatus", "secondAttdStatus", "thirdAttdStatus", "fourthAttdStatus"]
 let domains = [
     { 
         id: "1", 
@@ -201,12 +203,12 @@ io.on("connection",(socket)=>{
         const {name}=team
         socket.join(name)
         const Team=await Genisis.findById(team.id)
-        Team.lead.firstAttdStatus=team.lead ? "present" : "absent"
-        Team.markModified('lead') 
+        Team.lead[attds[currAttd]]=team.lead ? "present" : "absent"
+        Team.markModified('lead')
 
         for(let i=0; i<team.members.length; i++){
             const member=team.members[i]
-            Team.members[i].firstAttdStatus=member ? "present" : "absent"
+            Team.members[i][attds[currAttd]]=member ? "present" : "absent"
         }
         Team.markModified('members')
         // console.log(Team)
@@ -217,6 +219,14 @@ io.on("connection",(socket)=>{
         console.log(Team)
          io.to(name).emit("team",Team)
         await Team.save();
+    })
+
+    socket.on("currAttd",(num)=>{
+        currAttd=num || 0
+        io.emit("currAttd",currAttd)
+    })
+    socket.on("getCurrAttd",()=>{
+        io.emit("currAttd",currAttd)
     })
 
     socket.on("leaderboard",async(team)=>{

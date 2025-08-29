@@ -1,5 +1,6 @@
 const Gen = require("./modles/Gensis.js")
 const connectDB = require("./db")
+const fs=require("fs")
 async function doSomething() {
     try {
         await connectDB()
@@ -28,12 +29,19 @@ catch (error) {
 
 async function sort(){
             await connectDB()
-
-    let teams = await (await Gen.find({})).map((i)=>i.teamName)
-    teams = teams.sort((a, b) => a.localeCompare(b));
-
-    console.log(teams)
-    return teams
+            const passwords=[]
+            const teams = await Gen.find({})
+            for(let team of teams){
+                team.pass=team.lead.email.split("@")[0].slice(-1)+team.members.map((i)=>{return i.email.split("@")[0].slice(-1)}).join("")
+                let pass=team.lead.email.split("@")[0].slice(-1)+team.members.map((i)=>{return i.email.split("@")[0].slice(-1)}).join("")
+                if(passwords.includes(pass)){
+                    console.log("Duplicate password found:", pass)
+                }
+                passwords.push(pass)
+                await team.save()
+            }
+            fs.writeFileSync("passwords.txt", passwords.join("\n"))
+            console.log("Passwords saved to passwords.txt")
 }
 // doSomething()
 
