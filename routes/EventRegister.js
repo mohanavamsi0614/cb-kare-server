@@ -5,7 +5,7 @@ const Genisis=require("../modles/Gensis")
 const nodemailer=require("nodemailer")
 const dot=require("dotenv").config()
 const cors = require("cors")
-const mongoose = require("mongoose");
+const Problem = require("../modles/Problem"); 
 router.use(express.json())
 router.use(cors({origin:"*"}))
 const transporter = nodemailer.createTransport({
@@ -250,11 +250,11 @@ router.post("/team/score/:id", async (req, res) => {
 
     if (SecondReview) {
       Team.SecondReview = SecondReview;      
-      Team.SecondReviewScore = SecondScore;       
+      Team.SecoudReviewScore = SecondScore;       
     }
 
     Team.FinalScore =
-      (Team.FirstReviewScore || 0) + (Team.SecoundReviewScore || 0);
+      (Team.FirstReviewScore || 0) + (Team.SecoudReviewScore || 0);
 
     await Team.save();
     return res.json({ message: "done", FinalScore: Team.FinalScore });
@@ -263,7 +263,6 @@ router.post("/team/score/:id", async (req, res) => {
     res.status(500).json({ error: "Server error, check logs" });
   }
 });
-
 
 router.post("/pro/:id",async (req,res)=>{
   const { id } = req.params;
@@ -274,3 +273,104 @@ router.post("/pro/:id",async (req,res)=>{
   res.json("done")
 })
 module.exports = router;
+
+router.get("/problems/init", async (req, res) => {
+  try {
+    const problems = [
+      { title: "Problem Statement 1", description: "Build an AI-powered web application that helps students and professionals save time by converting videos into concise summaries. The app should transcribe video content, generate easy-to-read notes, highlight key moments with timestamps, and adapt the summary style based on the type of video (e.g., lecture notes, meeting action items, or news briefs) and the system should also support multi-language output, allowing summaries to be translated into atleast any three languages", maxLimit: 10 },
+      { title: "Problem Statement 2", description: "Create an AI-powered web application that helps users plan trips by generating personalized itineraries based on budget, destination, and duration. The system should recommend attractions, activities, and accommodations, while also offering sustainability mode with eco-friendly travel options like local homestays, public transport, and low-carbon routes. To make it more engaging, the AI should provide personalized trip companions such as a foodie guide, history expert, or adventure buddy tailored to the traveler’s interests. For global accessibility, the application should also include multi-language assistance, generating itineraries in multiple languages and offering essential travel phrases to help users communicate during their journey", maxLimit: 10 },
+      { title: "Problem Statement 3", description: "Develop a generative AI model for synthesizing high-quality medical images for rare diseases, enabling robust training and benchmarking for diagnostic systems under strict privacy constraints", maxLimit: 10 },
+      { title: "Problem Statement 4", description: "Build an AI system that uses generative models to simulate large-scale synthetic financial transaction datasets for advanced fraud detection and risk analysis, maintaining statistical fidelity while protecting real customer privacy", maxLimit: 10 },
+      { title: "Problem Statement 5", description: "Your task is to create an AI-powered application that transforms books, articles, or study materials into engaging videos. The system should summarize long text into key points, generate a narration using natural AI voices, and automatically pair it with visuals or slides to produce an explainer-style video. To make it more advanced and futuristic, the application should offer personalized summaries, where the user can choose a reading level (for example, school student vs. researcher) and the AI adjusts the complexity of the explanation. It should also support multi-language narration, allowing a book in English to be converted into a video narrated in Tamil, Hindi, Spanish, or other languages for global accessibility. Finally, the system should provide adaptive video styles, such as explainer slides for education, cinematic visuals with background music for storytelling, or fast-paced bulletins for news content", maxLimit: 10 },
+      { title: "Problem Statement 6", description: "Create a GenAI platform that automatically generates personalized, adaptive learning materials and interactive exercises from basic curriculum outlines, tailored to different learning speeds and preferences at scale", maxLimit: 10 },
+      { title: "Problem Statement 7", description: "Design a generative recommendation engine that creates realistic customer personas and product suggestions, simulating entire shopping sessions for market simulation and behavioral analysis", maxLimit: 10 },
+      { title: "Problem Statement 8", description: "Your task is to build an AI-powered e-commerce website using Shopify. The website should include core features like product listings, shopping cart, and secure payment integration. Additionally, integrate AI to enhance customer experience through Dynamic Pricing (adjusting prices based on demand, trends, and competition) and Voice Commerce (allowing users to search and shop using natural voice commands)", maxLimit: 10 },
+      { title: "Problem Statement 9", description: "Construct a generative AI solution to design and virtually prototype innovative new mechanical components, optimizing for both functional performance and manufacturability without human CAD input", maxLimit: 10 },
+      { title: "Problem Statement 10", description: "Design a GenAI model that forecasts urban air pollution levels and synthesizes actionable policy suggestions by combining environmental sensor data and predictive simulations", maxLimit: 10 },
+      { title: "Problem Statement 11", description: "Develop a GenAI-powered system that generates readable, comprehensive summaries from dense legal documentation and regulatory texts, automatically highlighting risk, compliance gaps, and relevant case precedents", maxLimit: 1 },
+    ];
+    await Problem.deleteMany({});
+    await Problem.insertMany(problems);
+    res.json("Problems initialized");
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Error initializing problems");
+  }
+});
+
+// 2. Fetch all problems with availability
+router.get("/problems", async (req, res) => {
+  try {
+    const problems = await Problem.find({});
+    const formatted = problems.map(p => ({
+      _id: p._id,
+      title: p.title,
+      description: p.description,
+      available: p.assignedTeams.length < p.maxLimit,
+      count: p.assignedTeams.length,
+      maxLimit: p.maxLimit
+    }));
+    res.json(formatted);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Error fetching problems");
+  }
+});
+
+// 3. Assign problem to a team
+router.post("/problems/select/:teamId/:problemId", async (req, res) => {
+  try {
+    const { teamId, problemId } = req.params;
+    const team = await Genisis.findById(teamId);
+    const problem = await Problem.findById(problemId);
+
+    if (!team || !problem) return res.status(404).json("Not found");
+
+    // If team already selected a problem, return that
+    if (team.ProblemStatement) {
+      return res.json({ message: "Already selected", problem: team.ProblemStatement });
+    }
+
+    // Check if problem has slots left
+    if (problem.assignedTeams.length >= problem.maxLimit) {
+      return res.status(400).json({message:"Problem limit reached"});
+    }
+
+    // Assign problem
+    problem.assignedTeams.push(team._id);
+    team.ProblemStatement = problem.title;
+
+    await problem.save();
+    await team.save();
+
+    res.json({ message: "Problem assigned", problem: team.ProblemStatement });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Error selecting problem");
+  }
+});
+
+// 4. Get problem assigned to a team
+router.get("/problems/team/:teamId", async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const team = await Genisis.findById(teamId);
+    if (!team) return res.status(404).json("Team not found");
+
+    // Find problem details
+    if (team.ProblemStatement) {
+      const problem = await Problem.findOne({ title: team.ProblemStatement });
+      res.json({
+        problem: {
+          title: team.ProblemStatement,
+          description: problem?.description || "No description provided",
+        },
+      });
+    } else {
+      res.json({ problem: null });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Error fetching team problem");
+  }
+});
