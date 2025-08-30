@@ -308,7 +308,8 @@ router.get("/problems", async (req, res) => {
       description: p.description,
       available: p.assignedTeams.length < p.maxLimit,
       count: p.assignedTeams.length,
-      maxLimit: p.maxLimit
+      maxLimit: p.maxLimit, 
+      assignedTeams: p.assignedTeams
     }));
     res.json(formatted);
   } catch (err) {
@@ -349,6 +350,44 @@ router.post("/problems/select/:teamId/:problemId", async (req, res) => {
     res.status(500).json("Error selecting problem");
   }
 });
+
+// ✅ Route to clean duplicate assignedTeams
+router.get("/problems/cleanup-duplicates", async (req, res) => {
+  try {
+    const problems = await Problem.find({});
+    let cleanedCount = 0;
+    const result = [];
+
+    for (let p of problems) {
+      const before = p.assignedTeams.length;
+      const uniqueTeams = [...new Set(p.assignedTeams.map(id => id.toString()))];
+
+      if (uniqueTeams.length !== before) {
+        p.assignedTeams = uniqueTeams;
+        await p.save();
+        cleanedCount++;
+
+        result.push({
+          title: p.title,
+          before,
+          after: uniqueTeams.length,
+          cleaned: before - uniqueTeams.length
+        });
+
+        console.log(`🧹 Cleaned duplicates in: ${p.title} | Before: ${before}, After: ${uniqueTeams.length}`);
+      }
+    }
+
+    res.json({
+      message: `Cleanup complete. ${cleanedCount} problems updated.`,
+      details: result
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Error cleaning duplicates");
+  }
+});
+
 
 // 4. Get problem assigned to a team
 router.get("/problems/team/:teamId", async (req, res) => {

@@ -18,7 +18,7 @@ const Innov=require("./modles/innov")
 const Food=require("./modles/Food")
 let prev=""
 let currAttd=0
-let attds=["0","firstAttdStatus", "secondAttdStatus", "thirdAttdStatus", "fourthAttdStatus"]
+let attds=["0","firstAttdStatus", "secondAttdStatus", "thirdAttdStatus", "fourthAttdStatus", "fifthAttdStatus", "sixthAttdStatus"]
 let domains = [
     { 
         id: "1", 
