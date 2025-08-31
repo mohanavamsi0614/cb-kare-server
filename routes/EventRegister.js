@@ -250,11 +250,11 @@ router.post("/team/score/:id", async (req, res) => {
 
     if (SecondReview) {
       Team.SecondReview = SecondReview;      
-      Team.SecoudReviewScore = SecondScore;       
+      Team.SecondReviewScore = SecondScore;       
     }
 
     Team.FinalScore =
-      (Team.FirstReviewScore || 0) + (Team.SecoudReviewScore || 0);
+      (Team.FirstReviewScore || 0) + (Team.SecondReviewScore || 0);
 
     await Team.save();
     return res.json({ message: "done", FinalScore: Team.FinalScore });

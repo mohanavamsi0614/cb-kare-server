@@ -15,7 +15,7 @@ const eventSchema = new mongoose.Schema({
     SecondReview: Object,
     ThirdReview: Object,
     FirstReviewScore: { type: Number, default: 0 },
-    SecoudReviewScore: { type: Number, default: 0 },
+    SecondReviewScore: { type: Number, default: 0 },
     FinalScore: Number,
     Sector: String,
     teampic: String,
